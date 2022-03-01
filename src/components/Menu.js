@@ -60,11 +60,9 @@ class Menu extends Component {
 
     return (
       <StyledToolbar className="toolbar">
-        <ToolbarTitle
-          className="toolbarTitle"
-          text="React Puzzle Games - 15 Puzzle"
-        />
+        <ToolbarTitle className="toolbarTitle" text="PROCON HCMUE" />
         <ToolbarGroup>
+
           <RaisedButton
             className="menuButton"
             label="New game"
@@ -72,6 +70,7 @@ class Menu extends Component {
             title="Start a new game"
             icon={<New className="menuIcon" />}
           />
+
           <RaisedButton
             className="menuButton"
             label={gameState === GAME_PAUSED ? 'Continue' : 'Pause'}

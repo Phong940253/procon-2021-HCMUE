@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getTileCoords, distanceBetween, invert } from '../lib/utils';
 import Grid from './Grid';
 import Menu from './Menu';
+import FormInput from './FormInput';
 import {
   GAME_IDLE,
   GAME_OVER,
@@ -216,12 +217,16 @@ class Game extends Component {
           onNewClick={onNewClick}
           gameState={this.state.gameState}
         />
-        <Grid
-          gridSize={gridSize}
-          tileSize={tileSize}
-          tiles={this.state.tiles}
-          onTileClick={this.onTileClick}
-        />
+        <div className="container">
+          <FormInput />
+          <Grid
+            gridSize={gridSize}
+            tileSize={tileSize}
+            tiles={this.state.tiles}
+            onTileClick={this.onTileClick}
+          />
+        </div>
+
         <Dialog
           title="Congrats!"
           actions={actions}
@@ -263,4 +268,10 @@ Game.defaultProps = {
 
 export default styled(Game)`
   flex: 1;
+
+  .container {
+    display: flex;
+    flex-direction: row; 
+    margin-left: 10px;
+  }
 `;
