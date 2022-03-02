@@ -177,6 +177,21 @@ const FormInput = () => {
             rows={2}
             fullWidth={true}
           />
+
+          <RaisedButton
+            className="menuButton"
+            label="Get Submit Challenge"
+            title="Start a new game"
+          />
+          <TextField
+            required
+            hintText="Thông tin câu trả lời cho Challenge"
+            className="inputText"
+            multiLine={true}
+            rowsMax={20}
+            rows={2}
+            fullWidth={true}
+          />
         </CardText>
 
       </Card>
