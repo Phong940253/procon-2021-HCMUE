@@ -25,6 +25,8 @@ const FormInput = () => {
   const [tourInfo, setTourInfo] = useState('');
   const [roundInfo, setRoundInfo] = useState('');
   const [matchInfo, setMatchInfo] = useState('');
+
+  const [iDChallenge, setIDChallenge] = useState('');
   const [textChallenge, setTextChallenge] = useState('');
 
   const getAllTour = async () => {
@@ -80,12 +82,13 @@ const FormInput = () => {
   };
 
   const getChallenge = async challengeID => {
+    // console.log(challengeID);
     await axios
-      .get(`${gameState.host}/challenge/raw-challenge/:${challengeID}`, {
+      .get(`${gameState.host}/challenge/raw/${challengeID}`, {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setTextChallenge(JSON.stringify(res.data[0]));
+        setTextChallenge(res.data);
         console.log(res.data);
       });
   };
@@ -252,11 +255,15 @@ const FormInput = () => {
             floatingLabelText="ID Challenge"
             className="inputText"
             fullWidth={true}
+            onChange={(e, text) => setIDChallenge(text)}
           />
           <RaisedButton
             className="menuButton"
             label="Get Challenge"
             title="Start a new game"
+            onClick={() => {
+              getChallenge(iDChallenge);
+            }}
           />
           <TextField
             required
@@ -266,6 +273,7 @@ const FormInput = () => {
             rowsMax={20}
             rows={2}
             fullWidth={true}
+            value={textChallenge}
           />
 
           <RaisedButton
