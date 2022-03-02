@@ -10,9 +10,12 @@ import Replay from 'material-ui/svg-icons/av/replay';
 import Pause from 'material-ui/svg-icons/av/pause';
 import Play from 'material-ui/svg-icons/av/play-arrow';
 import New from 'material-ui/svg-icons/action/power-settings-new';
+import Submit from 'material-ui/svg-icons/action/done';
+import Delete from 'material-ui/svg-icons/action/delete';
 import { GAME_STARTED, GAME_PAUSED } from '../lib/game-status';
 import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
+import { TextField } from 'material-ui';
 
 const StyledToolbar = styled(Toolbar)`
 
@@ -62,6 +65,20 @@ class Menu extends Component {
       <StyledToolbar className="toolbar">
         <ToolbarTitle className="toolbarTitle" text="PROCON HCMUE" />
         <ToolbarGroup>
+          <RaisedButton
+            className="menuButton"
+            label="Submit"
+            onClick={onNewClick}
+            title="Start a new game"
+            icon={<Submit className="menuIcon" />}
+          />
+          <RaisedButton
+            className="menuButton"
+            label="Delete"
+            onClick={onNewClick}
+            title="Start a new game"
+            icon={<Delete className="menuIcon" />}
+          />
 
           <RaisedButton
             className="menuButton"
@@ -71,7 +88,7 @@ class Menu extends Component {
             icon={<New className="menuIcon" />}
           />
 
-          <RaisedButton
+          {/* <RaisedButton
             className="menuButton"
             label={gameState === GAME_PAUSED ? 'Continue' : 'Pause'}
             onClick={onPauseClick}
@@ -82,7 +99,8 @@ class Menu extends Component {
             }
             title="Pause/Continue current game."
             disabled={gameState !== GAME_STARTED && gameState !== GAME_PAUSED}
-          />
+          /> */
+          }
           <RaisedButton
             className="menuButton"
             label="Reset game"
