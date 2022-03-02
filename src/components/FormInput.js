@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 // import FlatButton from 'material-ui/FlatButton';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
@@ -8,12 +8,26 @@ import { Divider } from 'material-ui';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { change_state } from '../redux/ducks';
-
+import axios from 'axios';
 // const inputCard =
 
 const FormInput = () => {
   const dispatch = useDispatch();
   const gameState = useSelector(state => state.general);
+  // const [token, setToken] = useState('');
+  const [urlRequest, setUrlRequest] = useState('http://112.137.129.202');
+
+  const getAllTour = async () => {
+    console.log(gameState.token);
+    console.log(`${urlRequest}/tournament`);
+    await axios
+      .get(`${urlRequest}/tournament`, {
+        headers: { Authorization: `Bearer ${gameState.token}` },
+      })
+      .then(res => {
+        console.log(res.data);
+      });
+  };
 
   return (
     <div
@@ -46,6 +60,7 @@ const FormInput = () => {
             className="menuButton"
             label="Get all Tournament"
             title="Start a new game"
+            onClick={getAllTour}
           />
           <TextField
             required
