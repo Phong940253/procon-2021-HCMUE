@@ -3,36 +3,183 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { Divider } from 'material-ui';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { change_state } from '../redux/ducks';
+
+import {
+  Link,
+  Button,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
+} from 'react-scroll';
+
+// const inputCard =
 
 const FormInput = () => {
   const dispatch = useDispatch();
   const gameState = useSelector(state => state.general);
 
   return (
-    <div className="formInput">
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '400px',
+        overflow: 'scroll',
+      }}
+    >
+
       <TextField
         required
-        id="outlined-required"
         floatingLabelText="Token"
         className="inputText"
-        onChange={text => {
+        onChange={(e, text) => {
           gameState.token = text;
           dispatch(change_state(gameState));
         }}
+        fullWidth={true}
+      />
+      <Card style={{}}>
+        <CardHeader
+          title="TOURNAMENT"
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+        <CardText expandable={true}>
+          <RaisedButton
+            className="menuButton"
+            label="Get all Tournament"
+            title="Start a new game"
+          />
+          <TextField
+            required
+            id="outlined-required"
+            hintText="Các Tournament của đội chơi"
+            className="inputText"
+            multiLine={true}
+            rowsMax={20}
+            rows={2}
+            fullWidth={true}
+          />
+          <Divider />
+          <TextField
+            required
+            id="outlined-required"
+            floatingLabelText="ID Tournament"
+            className="inputText"
+            fullWidth={true}
+          />
+          <RaisedButton
+            className="menuButton"
+            label="Get Tournament"
+            title="Start a new game"
+          />
+          <TextField
+            required
+            id="outlined-required"
+            hintText="Thông tin chi tiết Tournament"
+            className="inputText"
+            multiLine={true}
+            rowsMax={20}
+            rows={2}
+            fullWidth={true}
+          />
+        </CardText>
+      </Card>
+      <Card>
+        <CardHeader
+          title="ROUND"
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+      </Card>
+
+      <RaisedButton
+        className="menuButton"
+        label="Get Tournament"
+        title="Start a new game"
       />
       <TextField
         required
         id="outlined-required"
-        floatingLabelText="test"
+        floatingLabelText="ID Tournament"
         className="inputText"
-        value={gameState.token}
       />
       <RaisedButton
         className="menuButton"
-        label="Start"
+        label="Get Tournament"
+        title="Start a new game"
+      />
+      <TextField
+        required
+        id="outlined-required"
+        floatingLabelText="ID Tournament"
+        className="inputText"
+      />
+      <RaisedButton
+        className="menuButton"
+        label="Get Tournament"
+        title="Start a new game"
+      />
+      <TextField
+        required
+        id="outlined-required"
+        floatingLabelText="ID Tournament"
+        className="inputText"
+      />
+      <RaisedButton
+        className="menuButton"
+        label="Get Tournament"
+        title="Start a new game"
+      />
+      <TextField
+        required
+        id="outlined-required"
+        floatingLabelText="ID Tournament"
+        className="inputText"
+      />
+      <RaisedButton
+        className="menuButton"
+        label="Get Tournament"
+        title="Start a new game"
+      />
+      <TextField
+        required
+        id="outlined-required"
+        floatingLabelText="ID Tournament"
+        className="inputText"
+      />
+      <RaisedButton
+        className="menuButton"
+        label="Get Tournament"
+        title="Start a new game"
+      />
+      <TextField
+        required
+        id="outlined-required"
+        floatingLabelText="ID Tournament"
+        className="inputText"
+      />
+      <RaisedButton
+        className="menuButton"
+        label="Get Tournament"
+        title="Start a new game"
+      />
+      <TextField
+        required
+        id="outlined-required"
+        floatingLabelText="ID Tournament"
+        className="inputText"
+      />
+      <RaisedButton
+        className="menuButton"
+        label="Get Tournament"
         title="Start a new game"
       />
     </div>
@@ -41,13 +188,4 @@ const FormInput = () => {
 
 export default styled(FormInput)`
   flex: 1;
-
-  .formInput {
-    display: flex;
-    background-color: #fff;
-    flex-direction: column;
-  }
-
-  .inputText {
-  }
 `;
