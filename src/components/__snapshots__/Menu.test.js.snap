@@ -83,7 +83,7 @@ exports[`Menu renders correctly given default values 1`] = `
         onMouseUp={[Function]}
         onTouchEnd={[Function]}
         onTouchStart={[Function]}
-        onTouchTap={[Function]}
+        onClick={[Function]}
         style={
           Object {
             "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -218,7 +218,7 @@ exports[`Menu renders correctly given default values 1`] = `
         onMouseUp={[Function]}
         onTouchEnd={[Function]}
         onTouchStart={[Function]}
-        onTouchTap={[Function]}
+        onClick={[Function]}
         style={
           Object {
             "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -353,7 +353,7 @@ exports[`Menu renders correctly given default values 1`] = `
         onMouseUp={[Function]}
         onTouchEnd={[Function]}
         onTouchStart={[Function]}
-        onTouchTap={[Function]}
+        onClick={[Function]}
         style={
           Object {
             "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -468,7 +468,7 @@ exports[`Menu renders correctly given default values 1`] = `
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchStart={[Function]}
-      onTouchTap={[Function]}
+      onClick={[Function]}
       style={
         Object {
           "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -574,7 +574,7 @@ exports[`Menu renders correctly given default values 1`] = `
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchStart={[Function]}
-      onTouchTap={[Function]}
+      onClick={[Function]}
       style={
         Object {
           "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",

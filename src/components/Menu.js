@@ -66,7 +66,7 @@ class Menu extends Component {
           <RaisedButton
             className="menuButton"
             label="New game"
-            onTouchTap={onNewClick}
+            onClick={onNewClick}
             title="Start a new game"
             icon={<New className="menuIcon" />}
           />
@@ -74,7 +74,7 @@ class Menu extends Component {
           <RaisedButton
             className="menuButton"
             label={gameState === GAME_PAUSED ? 'Continue' : 'Pause'}
-            onTouchTap={onPauseClick}
+            onClick={onPauseClick}
             icon={
               gameState === GAME_PAUSED
                 ? <Play className="menuIcon" />
@@ -86,7 +86,7 @@ class Menu extends Component {
           <RaisedButton
             className="menuButton"
             label="Reset game"
-            onTouchTap={onResetClick}
+            onClick={onResetClick}
             title="Reset game"
             icon={<Replay className="menuIcon" />}
           />

@@ -89,7 +89,7 @@ exports[`App renders correctly 1`] = `
             onMouseUp={[Function]}
             onTouchEnd={[Function]}
             onTouchStart={[Function]}
-            onTouchTap={[Function]}
+            onClick={[Function]}
             style={
               Object {
                 "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -217,7 +217,7 @@ exports[`App renders correctly 1`] = `
             onFocus={[Function]}
             onKeyDown={[Function]}
             onKeyUp={[Function]}
-            onTouchTap={[Function]}
+            onClick={[Function]}
             style={
               Object {
                 "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -344,7 +344,7 @@ exports[`App renders correctly 1`] = `
             onMouseUp={[Function]}
             onTouchEnd={[Function]}
             onTouchStart={[Function]}
-            onTouchTap={[Function]}
+            onClick={[Function]}
             style={
               Object {
                 "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -459,7 +459,7 @@ exports[`App renders correctly 1`] = `
           onMouseUp={[Function]}
           onTouchEnd={[Function]}
           onTouchStart={[Function]}
-          onTouchTap={[Function]}
+          onClick={[Function]}
           style={
             Object {
               "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -565,7 +565,7 @@ exports[`App renders correctly 1`] = `
           onMouseUp={[Function]}
           onTouchEnd={[Function]}
           onTouchStart={[Function]}
-          onTouchTap={[Function]}
+          onClick={[Function]}
           style={
             Object {
               "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
