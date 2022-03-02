@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 // import FlatButton from 'material-ui/FlatButton';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';

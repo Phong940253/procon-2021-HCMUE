@@ -56,9 +56,7 @@ class Menu extends Component {
       seconds,
       moves,
       onResetClick,
-      onPauseClick,
       onNewClick,
-      gameState,
     } = this.props;
 
     return (
