@@ -272,6 +272,7 @@ export default styled(Game)`
   .container {
     display: flex;
     flex-direction: row; 
+    align-items: flex-start;
     margin-left: 10px;
   }
 `;
