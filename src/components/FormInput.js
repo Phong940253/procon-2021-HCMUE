@@ -21,7 +21,7 @@ const FormInput = () => {
   // const [token, setToken] = useState('');
   // const [urlRequest, setUrlRequest] = useState('http://112.137.129.202:8014');
 
-  const [listTournament, setListTournament] = useState(null);
+  const [listTournament, setListTournament] = useState('');
 
   const getAllTour = async () => {
     // console.log(gameState.token);
