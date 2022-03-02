@@ -9,16 +9,6 @@ import { Divider } from 'material-ui';
 import { useSelector, useDispatch } from 'react-redux';
 import { change_state } from '../redux/ducks';
 
-import {
-  Link,
-  Button,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller,
-} from 'react-scroll';
-
 // const inputCard =
 
 const FormInput = () => {
