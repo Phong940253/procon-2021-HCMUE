@@ -22,6 +22,7 @@ const FormInput = () => {
   // const [urlRequest, setUrlRequest] = useState('http://112.137.129.202:8014');
 
   const [listTournament, setListTournament] = useState('');
+  const [textChallenge, setTextChallenge] = useState('');
 
   const getAllTour = async () => {
     // console.log(gameState.token);
@@ -32,6 +33,17 @@ const FormInput = () => {
       })
       .then(res => {
         setListTournament(JSON.stringify(res.data[0]));
+        console.log(res.data);
+      });
+  };
+
+  const getChallenge = async challengeID => {
+    await axios
+      .get(`${gameState.host}/challenge/raw-challenge/:${challengeID}`, {
+        headers: { Authorization: `Bearer ${gameState.token}` },
+      })
+      .then(res => {
+        setTextChallenge(JSON.stringify(res.data[0]));
         console.log(res.data);
       });
   };
