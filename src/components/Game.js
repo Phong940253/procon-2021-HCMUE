@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { getTileCoords, distanceBetween, invert } from '../lib/utils';
 import Grid from './Grid';
 import Menu from './Menu';
@@ -15,6 +15,8 @@ import Snackbar from 'material-ui/Snackbar';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useSelector } from 'react-redux';
+
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -30,10 +32,25 @@ class Game extends Component {
       dialogOpen: false,
       snackbarOpen: false,
       snackbarText: '',
+      image: '',
     };
 
     document.addEventListener('keydown', this.keyDownListener);
   }
+
+  AlterState = () => {
+    const reducer = useSelector(state => state.image.image);
+    useEffect(
+      () => {
+        this.setState({
+          image: reducer,
+        });
+        console.log(reducer);
+      },
+      [],
+    );
+    return null;
+  };
 
   componentWillReceiveProps(nextProps) {
     const { tileSize, gridSize } = this.props;
@@ -224,6 +241,10 @@ class Game extends Component {
             tileSize={tileSize}
             tiles={this.state.tiles}
             onTileClick={this.onTileClick}
+          />
+          <img
+            alt="Ảnh đã trộn"
+            src={`data:image/jpeg;base64,${this.state.image}`}
           />
         </div>
 

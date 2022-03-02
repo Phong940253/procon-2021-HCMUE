@@ -36,7 +36,9 @@
       "plugin:react/recommended"
     ],
     "rules": {
-      "linebreak-style": "off"
+      "linebreak-style": "off",
+      "eqeqeq": "off",
+      "no-unused-vars": "off"
     }
   },
   "lint-staged": {

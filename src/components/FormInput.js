@@ -7,7 +7,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card';
 import { Divider } from 'material-ui';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { change_state } from '../redux/ducks';
+import { change_state, change_image } from '../redux/ducks';
 import axios from 'axios';
 // const inputCard =
 
@@ -18,6 +18,8 @@ const inputCard = {
 const FormInput = () => {
   const dispatch = useDispatch();
   const gameState = useSelector(state => state.general);
+  const imageState = useSelector(state => state.image);
+
   const [tourID, setTourID] = useState('');
   const [roundID, setRoundID] = useState('');
   const [matchID, setMatchID] = useState('');
@@ -82,13 +84,24 @@ const FormInput = () => {
   };
 
   const getChallenge = async challengeID => {
-    // console.log(challengeID);
+    // console.log(gameState.token);
     await axios
       .get(`${gameState.host}/challenge/raw-challenge/${challengeID}`, {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setChallengeInfo(res.data);
+        const data = res.data.split('\n');
+        // eslint-disable-next-line
+        let _;
+        [_, imageState.row, imageState.col] = data[1].split(' ');
+        [_, imageState.maxSelection] = data[2].split(' ');
+        [_, imageState.selectCost, imageState.swapCost] = data[3].split(' ');
+        [imageState.imgW, imageState.imgH] = data[4];
+        imageState.maxPixelValue = data[5];
+        imageState.image = data[-1];
+        dispatch(change_image(imageState));
+        const text = `row: ${imageState.row}, col: ${imageState.col}\nmaxSelection: ${imageState.maxSelection}\nselectCost: ${imageState.selectCost}, swapCost: ${imageState.swapCost}\nimgW: ${imageState.imgW}, imgH: ${imageState.imgH}\nmaxPixelValue ${imageState.maxPixelValue}`;
+        setChallengeInfo(text);
         console.log(res.data);
       });
   };
@@ -108,6 +121,9 @@ const FormInput = () => {
         className="inputText"
         onChange={(e, text) => {
           gameState.host = text;
+          // eslint-disable-next-line
+          if (gameState.host.slice(-1) == '/')
+            gameState.host = gameState.host.slice(0, -1);
           dispatch(change_state(gameState));
         }}
         fullWidth={true}
