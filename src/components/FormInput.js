@@ -19,13 +19,13 @@ const FormInput = () => {
   const dispatch = useDispatch();
   const gameState = useSelector(state => state.general);
   // const [token, setToken] = useState('');
-  const [urlRequest, setUrlRequest] = useState('http://112.137.129.202');
+  // const [urlRequest, setUrlRequest] = useState('http://112.137.129.202:8014');
 
   const getAllTour = async () => {
-    console.log(gameState.token);
-    console.log(`${urlRequest}/tournament`);
+    // console.log(gameState.token);
+    // console.log(`${gameState.host}/tournament`);
     await axios
-      .get(`${urlRequest}/tournament`, {
+      .get(`${gameState.host}/tournament`, {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
