@@ -16,6 +16,7 @@
     "material-ui": "^0.18.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-redux": "4.4.8",
     "react-responsive": "^1.3.0",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^4.1.2",
@@ -31,7 +32,10 @@
     "lint:staged": "lint-staged"
   },
   "eslintConfig": {
-    "extends": "airbnb",
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
     "rules": {
       "linebreak-style": "off"
     }
@@ -42,5 +46,21 @@
       "git add"
     ]
   },
-  "pre-commit": "lint:staged"
+  "pre-commit": "lint:staged",
+  "main": "index.js",
+  "repository": "git@github.com:Phong940253/procon-2021-HCMUE.git",
+  "author": "Phong <phong940253@gmail.com>",
+  "license": "MIT",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

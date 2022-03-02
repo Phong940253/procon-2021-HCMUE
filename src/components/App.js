@@ -5,6 +5,12 @@ import Footer from './Footer';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+// use redux
+import { createStore } from 'redux';
+import { reducers } from '../redux/ducks';
+import { Provider } from 'react-redux';
+const store = createStore(reducers);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -39,17 +45,19 @@ class App extends Component {
     const { className } = this.props;
 
     return (
-      <div className={className}>
-        <Game
-          gridSize={4}
-          tileSize={90}
-          numbers={this.state.level.tileSet}
-          onResetClick={this.onResetClick}
-          onNewClick={this.onNewClick}
-          original={this.state.original.tileSet}
-        />
-        <Footer />
-      </div>
+      <Provider store={store}>
+        <div className={className}>
+          <Game
+            gridSize={4}
+            tileSize={90}
+            numbers={this.state.level.tileSet}
+            onResetClick={this.onResetClick}
+            onNewClick={this.onNewClick}
+            original={this.state.original.tileSet}
+          />
+          <Footer />
+        </div>
+      </Provider>
     );
   }
 }
