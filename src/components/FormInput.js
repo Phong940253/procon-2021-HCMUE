@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { change_state } from '../redux/ducks';
+
 const FormInput = () => {
+  const dispatch = useDispatch();
+  const gameState = useSelector(state => state.general);
+
   return (
     <div className="formInput">
       <TextField
@@ -12,6 +18,17 @@ const FormInput = () => {
         id="outlined-required"
         floatingLabelText="Token"
         className="inputText"
+        onChange={text => {
+          gameState.token = text;
+          dispatch(change_state(gameState));
+        }}
+      />
+      <TextField
+        required
+        id="outlined-required"
+        floatingLabelText="test"
+        className="inputText"
+        value={gameState.token}
       />
       <RaisedButton
         className="menuButton"
