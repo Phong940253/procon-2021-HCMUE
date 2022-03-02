@@ -21,13 +21,13 @@ const FormInput = () => {
   const [tourID, setTourID] = useState('');
   const [roundID, setRoundID] = useState('');
   const [matchID, setMatchID] = useState('');
+  const [challengeID, setChallengeID] = useState('');
   const [listTournament, setListTournament] = useState('');
+
   const [tourInfo, setTourInfo] = useState('');
   const [roundInfo, setRoundInfo] = useState('');
   const [matchInfo, setMatchInfo] = useState('');
-
-  const [iDChallenge, setIDChallenge] = useState('');
-  const [textChallenge, setTextChallenge] = useState('');
+  const [challengeInfo, setChallengeInfo] = useState('');
 
   const getAllTour = async () => {
     // console.log(gameState.token);
@@ -37,12 +37,12 @@ const FormInput = () => {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setListTournament(JSON.stringify(res.data[0]), null, '\t');
+        setListTournament(JSON.stringify(res.data), null, '\t');
         console.log(res.data);
       });
   };
 
-  const getTour = async () => {
+  const getTour = async tourID => {
     // console.log(gameState.token);
     // console.log(`${gameState.host}/tournament`);
     await axios
@@ -50,12 +50,12 @@ const FormInput = () => {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setTourInfo(JSON.stringify(res.data.Rounds[0]), null, '\t');
-        console.log(res.data.Rounds[0]);
+        setTourInfo(JSON.stringify(res.data.Rounds), null, '\t');
+        console.log(res.data.Rounds);
       });
   };
 
-  const getRound = async () => {
+  const getRound = async roundID => {
     // console.log(gameState.token);
     // console.log(`${gameState.host}/tournament`);
     await axios
@@ -63,12 +63,12 @@ const FormInput = () => {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setRoundInfo(JSON.stringify(res.data.Matches[0]), null, '\t');
-        console.log(res.data.Matches[0]);
+        setRoundInfo(JSON.stringify(res.data.Matches), null, '\t');
+        console.log(res.data.Matches);
       });
   };
 
-  const getMatch = async () => {
+  const getMatch = async matchID => {
     // console.log(gameState.token);
     // console.log(`${gameState.host}/tournament`);
     await axios
@@ -76,19 +76,19 @@ const FormInput = () => {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setMatchInfo(JSON.stringify(res.data[0]), null, '\t');
-        console.log(res.data[0]);
+        setMatchInfo(JSON.stringify(res.data), null, '\t');
+        console.log(res.data);
       });
   };
 
   const getChallenge = async challengeID => {
     // console.log(challengeID);
     await axios
-      .get(`${gameState.host}/challenge/raw/${challengeID}`, {
+      .get(`${gameState.host}/challenge/raw-challenge/${challengeID}`, {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setTextChallenge(res.data);
+        setChallengeInfo(res.data);
         console.log(res.data);
       });
   };
@@ -159,7 +159,9 @@ const FormInput = () => {
             className="menuButton"
             label="Get Tournament"
             title="Start a new game"
-            onClick={getTour}
+            onClick={() => {
+              getTour(tourID);
+            }}
           />
           <TextField
             required
@@ -193,7 +195,9 @@ const FormInput = () => {
             className="menuButton"
             label="Get Round"
             title="Start a new game"
-            onClick={getRound}
+            onClick={() => {
+              getRound(roundID);
+            }}
           />
           <TextField
             required
@@ -220,7 +224,7 @@ const FormInput = () => {
             floatingLabelText="ID Match"
             className="inputText"
             fullWidth={true}
-            on_change={(e, text) => {
+            onChange={(e, text) => {
               setMatchID(text);
             }}
           />
@@ -228,7 +232,9 @@ const FormInput = () => {
             className="menuButton"
             label="Get Match"
             title="Start a new game"
-            onClick={getMatch}
+            onClick={() => {
+              getMatch(matchID);
+            }}
           />
           <TextField
             required
@@ -255,14 +261,14 @@ const FormInput = () => {
             floatingLabelText="ID Challenge"
             className="inputText"
             fullWidth={true}
-            onChange={(e, text) => setIDChallenge(text)}
+            onChange={(e, text) => setChallengeID(text)}
           />
           <RaisedButton
             className="menuButton"
             label="Get Challenge"
             title="Start a new game"
             onClick={() => {
-              getChallenge(iDChallenge);
+              getChallenge(challengeID);
             }}
           />
           <TextField
@@ -273,7 +279,7 @@ const FormInput = () => {
             rowsMax={20}
             rows={2}
             fullWidth={true}
-            value={textChallenge}
+            value={challengeInfo}
           />
 
           <RaisedButton
