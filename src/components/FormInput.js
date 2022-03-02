@@ -18,22 +18,64 @@ const inputCard = {
 const FormInput = () => {
   const dispatch = useDispatch();
   const gameState = useSelector(state => state.general);
-  // const [token, setToken] = useState('');
-  // const [urlRequest, setUrlRequest] = useState('http://112.137.129.202:8014');
-
+  const [tourID, setTourID] = useState('');
+  const [roundID, setRoundID] = useState('');
+  const [matchID, setMatchID] = useState('');
   const [listTournament, setListTournament] = useState('');
+  const [tourInfo, setTourInfo] = useState('');
+  const [roundInfo, setRoundInfo] = useState('');
+  const [matchInfo, setMatchInfo] = useState('');
   const [textChallenge, setTextChallenge] = useState('');
 
   const getAllTour = async () => {
     // console.log(gameState.token);
-    console.log(`${gameState.host}/tournament`);
+    // console.log(`${gameState.host}/tournament`);
     await axios
       .get(`${gameState.host}/tournament`, {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        setListTournament(JSON.stringify(res.data[0]));
+        setListTournament(JSON.stringify(res.data[0]), null, '\t');
         console.log(res.data);
+      });
+  };
+
+  const getTour = async () => {
+    // console.log(gameState.token);
+    // console.log(`${gameState.host}/tournament`);
+    await axios
+      .get(`${gameState.host}/tournament/${tourID}`, {
+        headers: { Authorization: `Bearer ${gameState.token}` },
+      })
+      .then(res => {
+        setTourInfo(JSON.stringify(res.data.Rounds[0]), null, '\t');
+        console.log(res.data.Rounds[0]);
+      });
+  };
+
+  const getRound = async () => {
+    // console.log(gameState.token);
+    // console.log(`${gameState.host}/tournament`);
+    await axios
+      .get(`${gameState.host}/round/${roundID}`, {
+        headers: { Authorization: `Bearer ${gameState.token}` },
+      })
+      .then(res => {
+        setRoundInfo(JSON.stringify(res.data.Matches[0]), null, '\t');
+        console.log(res.data.Matches[0]);
+      });
+  };
+
+  const getMatch = async () => {
+    // console.log(gameState.token);
+    // console.log(`${gameState.host}/tournament`);
+    await axios
+      .get(`${gameState.host}/match/${matchID}`, {
+        headers: { Authorization: `Bearer ${gameState.token}` },
+      })
+      .then(res => {
+        setMatchInfo(JSON.stringify(res.data[0]), null, '\t');
+        console.log(res.data[0]);
       });
   };
 
@@ -98,6 +140,7 @@ const FormInput = () => {
             rowsMax={20}
             rows={2}
             fullWidth={true}
+            value={listTournament}
           />
           <Divider />
           <TextField
@@ -105,11 +148,15 @@ const FormInput = () => {
             floatingLabelText="ID Tournament"
             className="inputText"
             fullWidth={true}
+            onChange={(e, text) => {
+              setTourID(text);
+            }}
           />
           <RaisedButton
             className="menuButton"
             label="Get Tournament"
             title="Start a new game"
+            onClick={getTour}
           />
           <TextField
             required
@@ -119,7 +166,7 @@ const FormInput = () => {
             rowsMax={20}
             rows={2}
             fullWidth={true}
-            value={listTournament}
+            value={tourInfo}
           />
         </CardText>
       </Card>
@@ -135,11 +182,15 @@ const FormInput = () => {
             floatingLabelText="ID Round"
             className="inputText"
             fullWidth={true}
+            onChange={(e, text) => {
+              setRoundID(text);
+            }}
           />
           <RaisedButton
             className="menuButton"
             label="Get Round"
             title="Start a new game"
+            onClick={getRound}
           />
           <TextField
             required
@@ -149,6 +200,7 @@ const FormInput = () => {
             rowsMax={20}
             rows={2}
             fullWidth={true}
+            value={roundInfo}
           />
         </CardText>
 
@@ -165,11 +217,15 @@ const FormInput = () => {
             floatingLabelText="ID Match"
             className="inputText"
             fullWidth={true}
+            on_change={(e, text) => {
+              setMatchID(text);
+            }}
           />
           <RaisedButton
             className="menuButton"
             label="Get Match"
             title="Start a new game"
+            onClick={getMatch}
           />
           <TextField
             required
@@ -179,6 +235,7 @@ const FormInput = () => {
             rowsMax={20}
             rows={2}
             fullWidth={true}
+            value={matchInfo}
           />
         </CardText>
 
