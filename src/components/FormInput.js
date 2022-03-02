@@ -21,14 +21,17 @@ const FormInput = () => {
   // const [token, setToken] = useState('');
   // const [urlRequest, setUrlRequest] = useState('http://112.137.129.202:8014');
 
+  const [listTournament, setListTournament] = useState(null);
+
   const getAllTour = async () => {
     // console.log(gameState.token);
-    // console.log(`${gameState.host}/tournament`);
+    console.log(`${gameState.host}/tournament`);
     await axios
       .get(`${gameState.host}/tournament`, {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
+        setListTournament(JSON.stringify(res.data[0]));
         console.log(res.data);
       });
   };
@@ -104,6 +107,7 @@ const FormInput = () => {
             rowsMax={20}
             rows={2}
             fullWidth={true}
+            value={listTournament}
           />
         </CardText>
       </Card>
