@@ -9,7 +9,9 @@ import { Divider } from 'material-ui';
 import { useSelector, useDispatch } from 'react-redux';
 import { change_state } from '../redux/ducks';
 
-// const inputCard =
+const inputCard = {
+  margin: '10px',
+};
 
 const FormInput = () => {
   const dispatch = useDispatch();
@@ -24,7 +26,16 @@ const FormInput = () => {
         overflow: 'scroll',
       }}
     >
-
+      <TextField
+        required
+        floatingLabelText="Host"
+        className="inputText"
+        onChange={(e, text) => {
+          gameState.host = text;
+          dispatch(change_state(gameState));
+        }}
+        fullWidth={true}
+      />
       <TextField
         required
         floatingLabelText="Token"
@@ -35,7 +46,7 @@ const FormInput = () => {
         }}
         fullWidth={true}
       />
-      <Card style={{}}>
+      <Card style={inputCard}>
         <CardHeader
           title="TOURNAMENT"
           actAsExpander={true}
@@ -49,7 +60,6 @@ const FormInput = () => {
           />
           <TextField
             required
-            id="outlined-required"
             hintText="Các Tournament của đội chơi"
             className="inputText"
             multiLine={true}
@@ -60,7 +70,6 @@ const FormInput = () => {
           <Divider />
           <TextField
             required
-            id="outlined-required"
             floatingLabelText="ID Tournament"
             className="inputText"
             fullWidth={true}
@@ -72,7 +81,6 @@ const FormInput = () => {
           />
           <TextField
             required
-            id="outlined-required"
             hintText="Thông tin chi tiết Tournament"
             className="inputText"
             multiLine={true}
@@ -82,96 +90,96 @@ const FormInput = () => {
           />
         </CardText>
       </Card>
-      <Card>
+      <Card style={inputCard}>
         <CardHeader
           title="ROUND"
           actAsExpander={true}
           showExpandableButton={true}
         />
-      </Card>
+        <CardText expandable={true}>
+          <TextField
+            required
+            floatingLabelText="ID Round"
+            className="inputText"
+            fullWidth={true}
+          />
+          <RaisedButton
+            className="menuButton"
+            label="Get Round"
+            title="Start a new game"
+          />
+          <TextField
+            required
+            hintText="Thông tin chi tiết Round"
+            className="inputText"
+            multiLine={true}
+            rowsMax={20}
+            rows={2}
+            fullWidth={true}
+          />
+        </CardText>
 
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        floatingLabelText="ID Tournament"
-        className="inputText"
-      />
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        floatingLabelText="ID Tournament"
-        className="inputText"
-      />
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        floatingLabelText="ID Tournament"
-        className="inputText"
-      />
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        floatingLabelText="ID Tournament"
-        className="inputText"
-      />
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        floatingLabelText="ID Tournament"
-        className="inputText"
-      />
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        floatingLabelText="ID Tournament"
-        className="inputText"
-      />
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
-      <TextField
-        required
-        id="outlined-required"
-        floatingLabelText="ID Tournament"
-        className="inputText"
-      />
-      <RaisedButton
-        className="menuButton"
-        label="Get Tournament"
-        title="Start a new game"
-      />
+      </Card>
+      <Card style={inputCard}>
+        <CardHeader
+          title="MATCH"
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+        <CardText expandable={true}>
+          <TextField
+            required
+            floatingLabelText="ID Match"
+            className="inputText"
+            fullWidth={true}
+          />
+          <RaisedButton
+            className="menuButton"
+            label="Get Match"
+            title="Start a new game"
+          />
+          <TextField
+            required
+            hintText="Thông tin chi tiết Match"
+            className="inputText"
+            multiLine={true}
+            rowsMax={20}
+            rows={2}
+            fullWidth={true}
+          />
+        </CardText>
+
+      </Card>
+      <Card style={inputCard}>
+        <CardHeader
+          title="CHALLENGE"
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+        <CardText expandable={true}>
+          <TextField
+            required
+            floatingLabelText="ID Challenge"
+            className="inputText"
+            fullWidth={true}
+          />
+          <RaisedButton
+            className="menuButton"
+            label="Get Challenge"
+            title="Start a new game"
+          />
+          <TextField
+            required
+            hintText="Thông tin chi tiết Challenge"
+            className="inputText"
+            multiLine={true}
+            rowsMax={20}
+            rows={2}
+            fullWidth={true}
+          />
+        </CardText>
+
+      </Card>
     </div>
   );
 };
