@@ -3,7 +3,7 @@ import React, { Component, useState } from 'react';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { Card, CardHeader, CardText } from 'material-ui/Card';
 import { Divider } from 'material-ui';
 
 import { useSelector, useDispatch } from 'react-redux';

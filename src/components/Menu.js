@@ -7,15 +7,15 @@ import Avatar from 'material-ui/Avatar';
 import Alarm from 'material-ui/svg-icons/action/alarm';
 import Moves from 'material-ui/svg-icons/action/compare-arrows';
 import Replay from 'material-ui/svg-icons/av/replay';
-import Pause from 'material-ui/svg-icons/av/pause';
-import Play from 'material-ui/svg-icons/av/play-arrow';
+// import Pause from 'material-ui/svg-icons/av/pause';
+// import Play from 'material-ui/svg-icons/av/play-arrow';
 import New from 'material-ui/svg-icons/action/power-settings-new';
 import Submit from 'material-ui/svg-icons/action/done';
 import Delete from 'material-ui/svg-icons/action/delete';
-import { GAME_STARTED, GAME_PAUSED } from '../lib/game-status';
+// import { GAME_STARTED, GAME_PAUSED } from '../lib/game-status';
 import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
-import { TextField } from 'material-ui';
+// import { TextField } from 'material-ui';
 
 const StyledToolbar = styled(Toolbar)`
 
