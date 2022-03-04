@@ -38,7 +38,7 @@ const Footer = () => (
         rel="noopener noreferrer"
         target="_blank"
       >
-        {' '}Phong and Danh Trung
+        {' '}Phong and Trung
       </a>
     </p>
   </FooterContent>

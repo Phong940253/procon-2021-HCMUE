@@ -121,31 +121,36 @@ const FormInput = () => {
         flexDirection: 'column',
         width: '400px',
         overflow: 'scroll',
+        height: '500px',
       }}
     >
-      <TextField
-        required
-        floatingLabelText="Host"
-        className="inputText"
-        onChange={(e, text) => {
-          gameState.host = text;
-          // eslint-disable-next-line
-          if (gameState.host.slice(-1) == '/')
-            gameState.host = gameState.host.slice(0, -1);
-          dispatch(change_state(gameState));
-        }}
-        fullWidth={true}
-      />
-      <TextField
-        required
-        floatingLabelText="Token"
-        className="inputText"
-        onChange={(e, text) => {
-          gameState.token = text;
-          dispatch(change_state(gameState));
-        }}
-        fullWidth={true}
-      />
+      <Card style={inputCard}>
+        <CardText>
+          <TextField
+            required
+            floatingLabelText="Host"
+            className="inputText"
+            onChange={(e, text) => {
+              gameState.host = text;
+              // eslint-disable-next-line
+              if (gameState.host.slice(-1) == '/')
+                gameState.host = gameState.host.slice(0, -1);
+              dispatch(change_state(gameState));
+            }}
+            fullWidth={true}
+          />
+          <TextField
+            required
+            floatingLabelText="Token"
+            className="inputText"
+            onChange={(e, text) => {
+              gameState.token = text;
+              dispatch(change_state(gameState));
+            }}
+            fullWidth={true}
+          />
+        </CardText>
+      </Card>
       <Card style={inputCard}>
         <CardHeader
           title="TOURNAMENT"
