@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getTileCoords, distanceBetween, invert } from '../lib/utils';
 import Grid from './Grid';
 import Menu from './Menu';
@@ -41,6 +41,7 @@ const Game = props => {
   const [seconds, setSeconds] = useState(props.seconds);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  // eslint-disable-next-line
   const [snackbarText, setSnackbarText] = useState('');
 
   const image = useSelector(state => state.image.imageSrc);
@@ -78,6 +79,7 @@ const Game = props => {
     // setMoves(0);
     // setSeconds(0);
     // clearInterval(timerId);
+    // eslint-disable-next-line
     if (image != undefined) console.log(image.length);
   });
 
