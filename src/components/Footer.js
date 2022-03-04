@@ -34,11 +34,11 @@ const Footer = () => (
       {' '}by{' '}
       <a
         className="footerlink"
-        href="https://github.com/react-puzzle-games"
+        href="https://github.com/Phong940253/procon-2021-HCMUE"
         rel="noopener noreferrer"
         target="_blank"
       >
-        {' '}React Puzzle Games
+        {' '}Phong and Danh Trung
       </a>
     </p>
   </FooterContent>
