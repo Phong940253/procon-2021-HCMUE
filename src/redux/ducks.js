@@ -14,7 +14,7 @@ const image = {
   imgW: 0,
   imgH: 0,
   maxPixelValue: 0,
-  image: null,
+  imageSrc: '',
 };
 
 const initialState = {

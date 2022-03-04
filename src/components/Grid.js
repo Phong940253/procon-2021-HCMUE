@@ -1,36 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tile, { propTypes as TilePropTypes } from './Tile';
 
-class Grid extends Component {
-  render() {
-    const {
-      className,
-      tiles,
-      onTileClick,
-      gridSize,
-    } = this.props;
-
-    return (
-      <div className={className}>
-        <div className="tiles">
-          {tiles.map((tile, tileId) => {
-            return (
-              <Tile
-                {...tile}
-                key={`tile-${tileId}`}
-                correct={tile.tileId + 1 === tile.number}
-                onClick={onTileClick}
-                visible={tile.number < gridSize ** 2}
-              />
-            );
-          })}
-        </div>
+const Grid = (
+  {
+    className,
+    tiles,
+    onTileClick,
+    gridSize,
+  },
+) => {
+  return (
+    <div className={className}>
+      <div className="tiles">
+        {tiles.map((tile, tileId) => {
+          return (
+            <Tile
+              {...tile}
+              key={`tile-${tileId}`}
+              correct={tile.tileId + 1 === tile.number}
+              onClick={onTileClick}
+              visible={tile.number < gridSize ** 2}
+            />
+          );
+        })}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 Grid.propTypes = {
   tiles: PropTypes.arrayOf(PropTypes.shape(TilePropTypes)).isRequired,

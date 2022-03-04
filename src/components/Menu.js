@@ -50,81 +50,72 @@ const StyledToolbar = styled(Toolbar)`
 
 `;
 
-class Menu extends Component {
-  render() {
-    const {
-      seconds,
-      moves,
-      onResetClick,
-      onNewClick,
-    } = this.props;
+const Menu = ({ seconds, moves, onResetClick, onNewClick }) => {
+  return (
+    <StyledToolbar className="toolbar">
+      <ToolbarTitle className="toolbarTitle" text="PROCON HCMUE" />
+      <ToolbarGroup>
+        <RaisedButton
+          className="menuButton"
+          label="Submit"
+          onClick={onNewClick}
+          title="Start a new game"
+          icon={<Submit className="menuIcon" />}
+        />
+        <RaisedButton
+          className="menuButton"
+          label="Delete"
+          onClick={onNewClick}
+          title="Start a new game"
+          icon={<Delete className="menuIcon" />}
+        />
 
-    return (
-      <StyledToolbar className="toolbar">
-        <ToolbarTitle className="toolbarTitle" text="PROCON HCMUE" />
-        <ToolbarGroup>
-          <RaisedButton
-            className="menuButton"
-            label="Submit"
-            onClick={onNewClick}
-            title="Start a new game"
-            icon={<Submit className="menuIcon" />}
-          />
-          <RaisedButton
-            className="menuButton"
-            label="Delete"
-            onClick={onNewClick}
-            title="Start a new game"
-            icon={<Delete className="menuIcon" />}
-          />
+        <RaisedButton
+          className="menuButton"
+          label="New game"
+          onClick={onNewClick}
+          title="Start a new game"
+          icon={<New className="menuIcon" />}
+        />
 
-          <RaisedButton
-            className="menuButton"
-            label="New game"
-            onClick={onNewClick}
-            title="Start a new game"
-            icon={<New className="menuIcon" />}
-          />
-
-          {/* <RaisedButton
-            className="menuButton"
-            label={gameState === GAME_PAUSED ? 'Continue' : 'Pause'}
-            onClick={onPauseClick}
-            icon={
-              gameState === GAME_PAUSED
-                ? <Play className="menuIcon" />
-                : <Pause className="menuIcon" />
-            }
-            title="Pause/Continue current game."
-            disabled={gameState !== GAME_STARTED && gameState !== GAME_PAUSED}
-          /> */
+        {/* <RaisedButton
+          className="menuButton"
+          label={gameState === GAME_PAUSED ? 'Continue' : 'Pause'}
+          onClick={onPauseClick}
+          icon={
+            gameState === GAME_PAUSED
+              ? <Play className="menuIcon" />
+              : <Pause className="menuIcon" />
           }
-          <RaisedButton
-            className="menuButton"
-            label="Reset game"
-            onClick={onResetClick}
-            title="Reset game"
-            icon={<Replay className="menuIcon" />}
-          />
-          <Chip>
-            <Avatar icon={<Alarm />} />
-            <MediaQuery query="(min-width: 772px)" component="span">
-              Time Elapsed:{' '}
-            </MediaQuery>
-            {seconds}s
-          </Chip>
-          <Chip>
-            <Avatar icon={<Moves />} />
-            <MediaQuery query="(min-width: 772px)" component="span">
-              Moves Counter:{' '}
-            </MediaQuery>
-            {moves}
-          </Chip>
-        </ToolbarGroup>
-      </StyledToolbar>
-    );
-  }
-}
+          title="Pause/Continue current game."
+          disabled={gameState !== GAME_STARTED && gameState !== GAME_PAUSED}
+        /> */
+        }
+        <RaisedButton
+          className="menuButton"
+          label="Reset game"
+          onClick={onResetClick}
+          title="Reset game"
+          icon={<Replay className="menuIcon" />}
+        />
+        <Chip>
+          <Avatar icon={<Alarm />} />
+          <MediaQuery query="(min-width: 772px)" component="span">
+            Time Elapsed:{' '}
+          </MediaQuery>
+          {seconds}s
+        </Chip>
+        <Chip>
+          <Avatar icon={<Moves />} />
+          <MediaQuery query="(min-width: 772px)" component="span">
+            Moves Counter:{' '}
+          </MediaQuery>
+          {moves}
+        </Chip>
+      </ToolbarGroup>
+    </StyledToolbar>
+  );
+};
 
 Menu.propTypes = {
   seconds: PropTypes.number.isRequired,

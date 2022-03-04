@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { getTileCoords, distanceBetween, invert } from '../lib/utils';
 import Grid from './Grid';
 import Menu from './Menu';
@@ -16,61 +16,42 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
+// { numbers, tileSize, gridSize, moves, seconds }
+const Game = props => {
+  const generateTiles = (numbers, gridSize, tileSize) => {
+    const tiles = [];
 
-class Game extends Component {
-  constructor(props) {
-    super(props);
-
-    const { numbers, tileSize, gridSize, moves, seconds } = props;
-    const tiles = this.generateTiles(numbers, gridSize, tileSize);
-
-    this.state = {
-      tiles,
-      gameState: GAME_IDLE,
-      moves,
-      seconds,
-      dialogOpen: false,
-      snackbarOpen: false,
-      snackbarText: '',
-      image: '',
-    };
-
-    document.addEventListener('keydown', this.keyDownListener);
-  }
-
-  AlterState = () => {
-    const reducer = useSelector(state => state.image.image);
-    useEffect(
-      () => {
-        this.setState({
-          image: reducer,
-        });
-        console.log(reducer);
-      },
-      [],
-    );
-    return null;
-  };
-
-  componentWillReceiveProps(nextProps) {
-    const { tileSize, gridSize } = this.props;
-    const newTiles = this.generateTiles(nextProps.numbers, gridSize, tileSize);
-
-    this.setState({
-      gameState: GAME_IDLE,
-      tiles: newTiles,
-      moves: 0,
-      seconds: 0,
+    numbers.forEach((number, index) => {
+      tiles[index] = {
+        ...getTileCoords(index, gridSize, tileSize),
+        width: props.tileSize,
+        height: props.tileSize,
+        number,
+      };
     });
 
-    clearInterval(this.timerId);
-  }
+    return tiles;
+  };
+
+  const [tiles, setTiles] = useState(
+    generateTiles(props.numbers, props.gridSize, props.tileSize),
+  );
+  const [gameState, setGameState] = useState(GAME_IDLE);
+  const [moves, setMoves] = useState(props.moves);
+  const [seconds, setSeconds] = useState(props.seconds);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
+
+  const image = useSelector(state => state.image.imageSrc);
+
+  let timerId = null;
 
   // End game by pressing CTRL + ALT + F
-  keyDownListener = key => {
+  const keyDownListener = key => {
     if (key.ctrlKey && key.altKey && key.code === 'KeyF') {
-      const { original, gridSize, tileSize } = this.props;
-      const solvedTiles = this.generateTiles(original, gridSize, tileSize).map((
+      const { original, gridSize, tileSize } = props;
+      const solvedTiles = generateTiles(original, gridSize, tileSize).map((
         tile,
         index,
       ) => {
@@ -78,119 +59,108 @@ class Game extends Component {
         return Object.assign({}, tile);
       });
 
-      clearInterval(this.timerId);
+      clearInterval(timerId);
 
-      this.setState({
-        gameState: GAME_OVER,
-        tiles: solvedTiles,
-        dialogOpen: true,
-      });
+      setGameState(GAME_OVER);
+      setTiles(solvedTiles);
+      setDialogOpen(true);
     }
   };
 
-  handleDialogClose = () => {
-    this.setState({
-      dialogOpen: false,
-    });
+  document.addEventListener('keydown', keyDownListener);
+
+  useEffect(() => {
+    // const { tileSize, gridSize } = props;
+    // const newTiles = generateTiles(props.numbers, gridSize, tileSize);
+
+    // setGameState(GAME_IDLE);
+    // setTiles(newTiles);
+    // setMoves(0);
+    // setSeconds(0);
+    // clearInterval(timerId);
+    if (image != undefined) console.log(image.length);
+  });
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
   };
 
-  handleSnackbarClose = reason => {
-    this.setState({
-      snackbarOpen: false,
-    });
+  const handleSnackbarClose = reason => {
+    setSnackbarOpen(false);
   };
 
-  generateTiles(numbers, gridSize, tileSize) {
-    const tiles = [];
-
-    numbers.forEach((number, index) => {
-      tiles[index] = {
-        ...getTileCoords(index, gridSize, tileSize),
-        width: this.props.tileSize,
-        height: this.props.tileSize,
-        number,
-      };
-    });
-
-    return tiles;
-  }
-
-  isGameOver(tiles) {
+  const isGameOver = tiles => {
     const correctedTiles = tiles.filter(tile => {
       return tile.tileId + 1 === tile.number;
     });
 
-    if (correctedTiles.length === (this.props.gridSize) ** 2) {
-      clearInterval(this.timerId);
+    if (correctedTiles.length === (props.gridSize) ** 2) {
+      clearInterval(timerId);
       return true;
     } else {
       return false;
     }
-  }
+  };
 
-  addTimer() {
-    this.setState(prevState => {
-      return { seconds: prevState.seconds + 1 };
-    });
-  }
+  const addTimer = () => {
+    setSeconds(seconds + 1);
+  };
 
-  setTimer() {
-    this.timerId = setInterval(
+  const setTimer = () => {
+    timerId = setInterval(
       () => {
-        this.addTimer();
+        addTimer();
       },
       1000,
     );
-  }
-
-  onPauseClick = () => {
-    this.setState(prevState => {
-      let newGameState = null;
-      let newSnackbarText = null;
-
-      if (prevState.gameState === GAME_STARTED) {
-        clearInterval(this.timerId);
-        newGameState = GAME_PAUSED;
-        newSnackbarText = 'The game is currently paused.';
-      } else {
-        this.setTimer();
-        newGameState = GAME_STARTED;
-        newSnackbarText = 'Game on!';
-      }
-
-      return {
-        gameState: newGameState,
-        snackbarOpen: true,
-        snackbarText: newSnackbarText,
-      };
-    });
   };
 
-  onTileClick = tile => {
-    if (
-      this.state.gameState === GAME_OVER || this.state.gameState === GAME_PAUSED
-    ) {
+  // const onPauseClick = () => {
+  //   this.setState(prevState => {
+  //     let newGameState = null;
+  //     let newSnackbarText = null;
+
+  //     if (prevState.gameState === GAME_STARTED) {
+  //       clearInterval(this.timerId);
+  //       newGameState = GAME_PAUSED;
+  //       newSnackbarText = 'The game is currently paused.';
+  //     } else {
+  //       this.setTimer();
+  //       newGameState = GAME_STARTED;
+  //       newSnackbarText = 'Game on!';
+  //     }
+
+  //     return {
+  //       gameState: newGameState,
+  //       snackbarOpen: true,
+  //       snackbarText: newSnackbarText,
+  //     };
+  //   });
+  // };
+
+  const onTileClick = tile => {
+    if (gameState === GAME_OVER || gameState === GAME_PAUSED) {
       return;
     }
 
     // Set Timer in case of first click
-    if (this.state.moves === 0) {
-      this.setTimer();
+    if (moves === 0) {
+      setTimer();
     }
 
-    const { gridSize } = this.props;
+    const { gridSize } = props;
 
     // Find empty tile
-    const emptyTile = this.state.tiles.find(t => t.number === gridSize ** 2);
-    const emptyTileIndex = this.state.tiles.indexOf(emptyTile);
+    const emptyTile = tiles.find(t => t.number === gridSize ** 2);
+    const emptyTileIndex = tiles.indexOf(emptyTile);
 
     // Find index of tile
-    const tileIndex = this.state.tiles.findIndex(t => t.number === tile.number);
+    const tileIndex = tiles.findIndex(t => t.number === tile.number);
 
     // Is this tale neighbouring the zero tile? If so, switch them.
     const d = distanceBetween(tile, emptyTile);
     if (d.neighbours) {
-      let t = Array.from(this.state.tiles).map(t => ({ ...t }));
+      let t = Array.from(tiles).map(t => ({ ...t }));
 
       invert(t, emptyTileIndex, tileIndex, [
         'top',
@@ -200,76 +170,61 @@ class Game extends Component {
         'tileId',
       ]);
 
-      const checkGameOver = this.isGameOver(t);
+      const checkGameOver = isGameOver(t);
 
-      this.setState({
-        gameState: checkGameOver ? GAME_OVER : GAME_STARTED,
-        tiles: t,
-        moves: this.state.moves + 1,
-        dialogOpen: checkGameOver ? true : false,
-      });
+      setGameState(checkGameOver ? GAME_OVER : GAME_STARTED);
+      setTiles(t);
+      setMoves(moves + 1);
+      setDialogOpen(checkGameOver ? true : false);
     }
   };
 
-  render() {
-    const {
-      className,
-      gridSize,
-      tileSize,
-      onResetClick,
-      onNewClick,
-    } = this.props;
+  const actions = [
+    <FlatButton key={1} label="Close" onClick={handleDialogClose} />,
+  ];
 
-    const actions = [
-      <FlatButton label="Close" onClick={this.handleDialogClose} />,
-    ];
-
-    return (
-      <div className={className}>
-        <Menu
-          seconds={this.state.seconds}
-          moves={this.state.moves}
-          onResetClick={onResetClick}
-          onPauseClick={this.onPauseClick}
-          onNewClick={onNewClick}
-          gameState={this.state.gameState}
+  return (
+    <div className={props.className}>
+      <Menu
+        seconds={seconds}
+        moves={moves}
+        onResetClick={props.onResetClick}
+        onPauseClick={props.onPauseClick}
+        onNewClick={props.onNewClick}
+        gameState={gameState}
+      />
+      <div className="container">
+        <FormInput />
+        <Grid
+          gridSize={props.gridSize}
+          tileSize={props.tileSize}
+          tiles={tiles}
+          onTileClick={onTileClick}
         />
-        <div className="container">
-          <FormInput />
-          <Grid
-            gridSize={gridSize}
-            tileSize={tileSize}
-            tiles={this.state.tiles}
-            onTileClick={this.onTileClick}
-          />
-          <img
-            alt="Ảnh đã trộn"
-            src={`data:image/jpeg;base64,${this.state.image}`}
-          />
-        </div>
-
-        <Dialog
-          title="Congrats!"
-          actions={actions}
-          modal={false}
-          open={this.state.dialogOpen}
-          onRequestClose={this.handleDialogClose}
-        >
-          You've solved the puzzle in{' '}
-          {this.state.moves}
-          {' '}moves in{' '}
-          {this.state.seconds}
-          {' '}seconds!
-        </Dialog>
-        <Snackbar
-          open={this.state.snackbarOpen}
-          message={this.state.snackbarText}
-          onRequestClose={this.handleSnackbarClose}
-        />
+        <img alt="Ảnh đã trộn" ng-src={`data:image/png;base64,${image}`} />
       </div>
-    );
-  }
-}
+
+      <Dialog
+        title="Congrats!"
+        actions={actions}
+        modal={false}
+        open={dialogOpen}
+        onRequestClose={handleDialogClose}
+      >
+        You ve solved the puzzle in{' '}
+        {moves}
+        {' '}moves in{' '}
+        {seconds}
+        {' '}seconds!
+      </Dialog>
+      <Snackbar
+        open={snackbarOpen}
+        message={snackbarText}
+        onRequestClose={handleSnackbarClose}
+      />
+    </div>
+  );
+};
 
 Game.propTypes = {
   numbers: PropTypes.arrayOf(PropTypes.number).isRequired,

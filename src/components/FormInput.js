@@ -98,11 +98,19 @@ const FormInput = () => {
         [_, imageState.selectCost, imageState.swapCost] = data[3].split(' ');
         [imageState.imgW, imageState.imgH] = data[4];
         imageState.maxPixelValue = data[5];
-        imageState.image = data[-1];
+
+        let begin = res.data.indexOf('\n');
+        for (let i = 0; i < 5; ++i) {
+          begin = res.data.indexOf('\n', begin + 1);
+        }
+        imageState.imageSrc = res.data.substring(begin + 1);
+        // console.log(res.data.substring(begin + 1));
+        console.log(res.data.length, res.data.substring(begin + 1).length);
+
         dispatch(change_image(imageState));
         const text = `row: ${imageState.row}, col: ${imageState.col}\nmaxSelection: ${imageState.maxSelection}\nselectCost: ${imageState.selectCost}, swapCost: ${imageState.swapCost}\nimgW: ${imageState.imgW}, imgH: ${imageState.imgH}\nmaxPixelValue ${imageState.maxPixelValue}`;
         setChallengeInfo(text);
-        console.log(res.data);
+        // console.log(res.data);
       });
   };
 
