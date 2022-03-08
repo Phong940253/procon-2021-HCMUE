@@ -8,6 +8,7 @@ import { Divider } from 'material-ui';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { change_state, change_image } from '../redux/ducks';
+import parsePPM from '../lib/ppm-decode';
 import axios from 'axios';
 // const inputCard =
 
@@ -96,7 +97,7 @@ const FormInput = () => {
         [_, imageState.row, imageState.col] = data[1].split(' ');
         [_, imageState.maxSelection] = data[2].split(' ');
         [_, imageState.selectCost, imageState.swapCost] = data[3].split(' ');
-        [imageState.imgW, imageState.imgH] = data[4];
+        [imageState.imgW, imageState.imgH] = data[4].split(' ');
         imageState.maxPixelValue = data[5];
 
         let begin = res.data.indexOf('\n');
@@ -105,11 +106,27 @@ const FormInput = () => {
         }
         imageState.imageSrc = res.data.substring(begin + 1);
         // console.log(res.data.substring(begin + 1));
-        console.log(res.data.length, res.data.substring(begin + 1).length);
+        // console.log(res.data.length, res.data.substring(begin + 1).length);
 
-        dispatch(change_image(imageState));
-        const text = `row: ${imageState.row}, col: ${imageState.col}\nmaxSelection: ${imageState.maxSelection}\nselectCost: ${imageState.selectCost}, swapCost: ${imageState.swapCost}\nimgW: ${imageState.imgW}, imgH: ${imageState.imgH}\nmaxPixelValue ${imageState.maxPixelValue}`;
-        setChallengeInfo(text);
+        let ppmImage = parsePPM(res.data);
+
+        imageState.width = ppmImage.width;
+        imageState.height = ppmImage.height;
+        imageState.imageSrc = ppmImage.data;
+
+        Promise
+          .all([
+            // Cut out two sprites from the sprite sheet
+            createImageBitmap(imageState.imageSrc),
+          ])
+          .then(function(sprites) {
+            // Draw each sprite onto the canvas
+            // console.log(sprites);
+            imageState.imageSrc = sprites[0];
+            dispatch(change_image(imageState));
+            const text = `row: ${imageState.row}, col: ${imageState.col}\nmaxSelection: ${imageState.maxSelection}\nselectCost: ${imageState.selectCost}, swapCost: ${imageState.swapCost}\nimgW: ${imageState.imgW}, imgH: ${imageState.imgH}\nmaxPixelValue ${imageState.maxPixelValue}`;
+            setChallengeInfo(text);
+          });
         // console.log(res.data);
       });
   };

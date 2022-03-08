@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getTileCoords, distanceBetween, invert } from '../lib/utils';
-import Grid from './Grid';
+// import Grid from './Grid';
 import Menu from './Menu';
 import FormInput from './FormInput';
 import {
@@ -14,6 +14,10 @@ import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import ReadFile from './ReadFile';
+
+import { Stage, Group, Layer, Rect, Image } from 'react-konva';
 
 import { useSelector } from 'react-redux';
 // { numbers, tileSize, gridSize, moves, seconds }
@@ -33,6 +37,10 @@ const Game = props => {
     return tiles;
   };
 
+  const width = useSelector(state => state.image.imgW);
+  const height = useSelector(state => state.image.imgH);
+  const image = useSelector(state => state.image.imageSrc);
+
   const [tiles, setTiles] = useState(
     generateTiles(props.numbers, props.gridSize, props.tileSize),
   );
@@ -43,8 +51,6 @@ const Game = props => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   // eslint-disable-next-line
   const [snackbarText, setSnackbarText] = useState('');
-
-  const image = useSelector(state => state.image.imageSrc);
 
   let timerId = null;
 
@@ -80,7 +86,7 @@ const Game = props => {
     // setSeconds(0);
     // clearInterval(timerId);
     // eslint-disable-next-line
-    if (image != undefined) console.log(image.length);
+    if (image != undefined) console.log(image);
   });
 
   const handleDialogClose = () => {
@@ -140,6 +146,7 @@ const Game = props => {
   //   });
   // };
 
+  // eslint-disable-next-line
   const onTileClick = tile => {
     if (gameState === GAME_OVER || gameState === GAME_PAUSED) {
       return;
@@ -197,13 +204,46 @@ const Game = props => {
       />
       <div className="container">
         <FormInput />
-        <Grid
+        {/* <Grid
           gridSize={props.gridSize}
           tileSize={props.tileSize}
           tiles={tiles}
           onTileClick={onTileClick}
-        />
-        <img alt="Ảnh đã trộn" ng-src={`data:image/png;base64,${image}`} />
+        /> */
+        }
+        <div>
+          <ReadFile />
+          <Stage width={800} height={800}>
+            <Layer>
+              <Group x={0} y={0} width={width} height={height} draggable={true}>
+                <Rect
+                  x={0}
+                  y={0}
+                  width={width}
+                  height={height}
+                  // fillPatternImage={this.state.fillPatternImage}
+                  fillPatternRepeat={'repeat'}
+                />
+                <Image
+                  x={0}
+                  y={0}
+                  width={width}
+                  height={height}
+                  globalCompositeOperation={'multiply'}
+                  image={image}
+                />
+                <Image
+                  x={0}
+                  y={0}
+                  width={width}
+                  height={height}
+                  globalCompositeOperation={'destination-in'}
+                  image={image}
+                />
+              </Group>
+            </Layer>
+          </Stage>
+        </div>
       </div>
 
       <Dialog
