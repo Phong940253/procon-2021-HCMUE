@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { Stage, Group, Layer, Rect, Image, Text } from 'react-konva';
+import { Stage, Group, Layer, Rect, Image, Text, Line } from 'react-konva';
 // import Tile, { propTypes as TilePropTypes } from './Tile';
 
 const initDataImage = (row, col) => {
@@ -75,6 +75,26 @@ const GridKonvas = () => {
           height={imageState.height}
           draggable={false}
         >
+          <Line
+            strokeWidth={2}
+            stroke={'red'}
+            points={[0, 0, 0, imageState.width]}
+          />
+          <Line
+            strokeWidth={2}
+            stroke={'red'}
+            points={[0, 0, imageState.height, 0]}
+          />
+          <Line
+            strokeWidth={2}
+            stroke={'red'}
+            points={[0, imageState.width, imageState.height, imageState.width]}
+          />
+          <Line
+            strokeWidth={2}
+            stroke={'red'}
+            points={[imageState.height, 0, imageState.height, imageState.width]}
+          />
           {/* <Rect
                     x={50}
                     y={50}
