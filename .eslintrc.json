@@ -5,7 +5,7 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "eslint:recommended"
+        "standard"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -17,11 +17,7 @@
     "plugins": [
         "react"
     ],
-    "ignorePatterns": ["yarn.lock"],
     "rules": {
-        "react/prop-types": "off",
-        "linebreak-style": "off",
-        "eqeqeq": "off",
-        "no-unused-vars": "off"
+        "semi": "off"
     }
 }

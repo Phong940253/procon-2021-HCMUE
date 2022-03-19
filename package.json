@@ -9,7 +9,7 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
-    "eslint-plugin-react": "^7.29.3",
+    "eslint-plugin-react": "^7.29.4",
     "lint-staged": "^3.3.1",
     "pre-commit": "^1.2.2",
     "prettier": "^0.18.0",
@@ -37,7 +37,9 @@
     "test:coverage": "npm test -- --coverage",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "eject": "react-scripts eject",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "eslintConfig": {
     "extends": [
@@ -45,9 +47,8 @@
       "plugin:react/recommended"
     ],
     "rules": {
-      "linebreak-style": "off",
-      "eqeqeq": "off",
-      "no-unused-vars": "off"
+      "semi": "off",
+      "radix": "off"
     }
   },
   "lint-staged": {
