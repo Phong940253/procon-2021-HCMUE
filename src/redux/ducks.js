@@ -11,8 +11,8 @@ const image = {
   maxSelection: 0,
   selectCost: 0,
   swapCost: 0,
-  imgW: 0,
-  imgH: 0,
+  width: 0,
+  height: 0,
   maxPixelValue: 0,
   imageSrc: '',
 };
