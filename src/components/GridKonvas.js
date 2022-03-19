@@ -40,6 +40,7 @@ const GridKonvas = () => {
     dataImage[id - 1].isDragging = true;
     // const data = dataImage.map(item => (item.id === id ? { ...item, isDragging: true } : item));
     setDataImage(dataImage);
+    // console.log(dataImage);
   };
 
   const handleDradEnd = e => {
@@ -52,7 +53,7 @@ const GridKonvas = () => {
   };
 
   const handleContextMenu = e => {
-    console.log(e);
+    // console.log(e);
     e.evt.preventDefault();
     const id = e.target.id();
     const data = dataImage.map(
@@ -98,6 +99,7 @@ const GridKonvas = () => {
                 onDragStart={handleDragStart}
                 onDragEnd={handleDradEnd}
                 onContextMenu={handleContextMenu}
+                offset={{ x: (-gridX) / 2, y: (-gridY) / 2 }}
               >
                 <Rect
                   id={v.id}
@@ -109,28 +111,29 @@ const GridKonvas = () => {
                   stroke="black"
                   strokeWidth={STROKE_VALUE}
                   rotation={v.rotation}
-                  // offsetX={imageState.width / imageState.col / 2}
-                  // offsetY={imageState.height / imageState.row / 2}
-
-                  fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-                  fillLinearGradientEndPoint={{ x: gridX, y: gridY }}
-                  fillLinearGradientColorStops={[
-                    0,
-                    'rgba(0,0,0,0.7)',
-                    1,
-                    'rgba(255,255,255,0.5)',
-                  ]}
+                  fillPatternImage={imageState.imageSrc}
+                  offset={{ x: gridX / 2, y: gridY / 2 }}
+                  //   fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+                  //   fillLinearGradientEndPoint={{ x: gridX, y: gridY }}
+                  //   fillLinearGradientColorStops={[
+                  //     0,
+                  //     'rgba(0,0,0,0.7)',
+                  //     1,
+                  //     'rgba(255,255,255,0.5)'
+                  //   ]}
                   // fill="red"
                 />
-                <Text
+                {/* <Text
                   text={v.id}
                   fontSize={40}
                   fontFamily="Calibri"
                   fill="#000"
                   width={gridX}
                   align="center"
+                  offset={{ x: gridX / 2, y: gridY / 2 }}
                   // padding={5}
-                />
+                /> */
+                }
               </Group>
             );
           })}
