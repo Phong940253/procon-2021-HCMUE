@@ -14,22 +14,19 @@ const ReadFile = () => {
       // console.log(ppmDecode(text))
       // console.log(text);
       // const text = (reader.result);
-      let ppmImage = parsePPM(e.target.result);
+      // let ppmImage = parsePPM(e.target.result);
+      let val = parsePPM(e.target.result);
 
-      imageState.width = ppmImage.width;
-      imageState.height = ppmImage.height;
-      imageState.imageSrc = ppmImage.data;
-      // console.log(imageState.imageSrc);
       Promise
         .all([
           // Cut out two sprites from the sprite sheet
-          createImageBitmap(imageState.imageSrc),
+          createImageBitmap(val.imageSrc),
         ])
         .then(function(sprites) {
           // Draw each sprite onto the canvas
           // console.log(sprites);
-          imageState.imageSrc = sprites[0];
-          dispatch(change_image(imageState));
+          val.imageSrc = sprites[0];
+          dispatch(change_image(val));
         });
       // ctx.putImageData(ppmImage.data, 0, 0);
     };
