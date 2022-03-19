@@ -16,10 +16,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import ReadFile from './ReadFile';
+import GridKonvas from './GridKonvas';
 
-import { Stage, Group, Layer, Rect, Image } from 'react-konva';
-
-import { useSelector } from 'react-redux';
 // { numbers, tileSize, gridSize, moves, seconds }
 const Game = props => {
   const generateTiles = (numbers, gridSize, tileSize) => {
@@ -36,10 +34,6 @@ const Game = props => {
 
     return tiles;
   };
-
-  const width = useSelector(state => state.image.imgW);
-  const height = useSelector(state => state.image.imgH);
-  const image = useSelector(state => state.image.imageSrc);
 
   const [tiles, setTiles] = useState(
     generateTiles(props.numbers, props.gridSize, props.tileSize),
@@ -79,14 +73,13 @@ const Game = props => {
   useEffect(() => {
     // const { tileSize, gridSize } = props;
     // const newTiles = generateTiles(props.numbers, gridSize, tileSize);
-
     // setGameState(GAME_IDLE);
     // setTiles(newTiles);
     // setMoves(0);
     // setSeconds(0);
     // clearInterval(timerId);
     // eslint-disable-next-line
-    if (image != undefined) console.log(image);
+    // if (image != undefined) console.log(image);
   });
 
   const handleDialogClose = () => {
@@ -213,36 +206,7 @@ const Game = props => {
         }
         <div>
           <ReadFile />
-          <Stage width={800} height={800}>
-            <Layer>
-              <Group x={0} y={0} width={width} height={height} draggable={true}>
-                <Rect
-                  x={0}
-                  y={0}
-                  width={width}
-                  height={height}
-                  // fillPatternImage={this.state.fillPatternImage}
-                  fillPatternRepeat={'repeat'}
-                />
-                <Image
-                  x={0}
-                  y={0}
-                  width={width}
-                  height={height}
-                  globalCompositeOperation={'multiply'}
-                  image={image}
-                />
-                <Image
-                  x={0}
-                  y={0}
-                  width={width}
-                  height={height}
-                  globalCompositeOperation={'destination-in'}
-                  image={image}
-                />
-              </Group>
-            </Layer>
-          </Stage>
+          <GridKonvas />
         </div>
       </div>
 
