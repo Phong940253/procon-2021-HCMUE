@@ -92,11 +92,8 @@ const FormInput = () => {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        // console.log(res);
-        const data = res.data.split('\n');
-
         // console.log(string);
-        let val = parsePPM(res.data);
+        const val = parsePPM(res.data);
 
         Promise
           .all([
@@ -108,6 +105,7 @@ const FormInput = () => {
             // console.log(sprites);
             val.imageSrc = sprites[0];
             dispatch(change_image(val));
+            console.log(val);
             const text = `row: ${imageState.row}, col: ${imageState.col}\nmaxSelection: ${imageState.maxSelection}\nselectCost: ${imageState.selectCost}, swapCost: ${imageState.swapCost}\nimgW: ${imageState.width}, imgH: ${imageState.height}\nmaxPixelValue ${imageState.maxPixelValue}`;
             setChallengeInfo(text);
           });
@@ -134,8 +132,9 @@ const FormInput = () => {
             onChange={(e, text) => {
               gameState.host = text;
               // eslint-disable-next-line
-              if (gameState.host.slice(-1) == '/')
+              if (gameState.host.slice(-1) == '/') {
                 gameState.host = gameState.host.slice(0, -1);
+              }
               dispatch(change_state(gameState));
             }}
             fullWidth={true}

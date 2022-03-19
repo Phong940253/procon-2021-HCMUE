@@ -1,15 +1,12 @@
 const parsePPM = data => {
-  let NUM_CHANNELS = 3;
-  let NUM_HEADERS = 12;
-  let DEFAULT_ALPHA = 255;
-  let myImageData;
-  let width;
-  let height;
+  const NUM_CHANNELS = 3;
+  const NUM_HEADERS = 12;
+  const DEFAULT_ALPHA = 255;
 
   data = new Uint8Array(data);
   console.log('parse data');
 
-  let headers = [];
+  const headers = [];
   let headerSize = 0;
 
   let buf = '';
@@ -26,15 +23,15 @@ const parsePPM = data => {
     }
   }
 
-  width = headers[9];
-  height = headers[10];
+  const width = parseInt(headers[9]);
+  const height = parseInt(headers[10]);
 
   // if (!(maxval >= 0 && maxval <= 255))
-  let raster = data.slice(headerSize);
+  const raster = data.slice(headerSize);
 
-  //canvas requires alpha channel
-  let lenWithAlpha = raster.length / NUM_CHANNELS + raster.length;
-  let bytes = new Uint8ClampedArray(lenWithAlpha);
+  // canvas requires alpha channel
+  const lenWithAlpha = raster.length / NUM_CHANNELS + raster.length;
+  const bytes = new Uint8ClampedArray(lenWithAlpha);
 
   let index = 0;
   for (let i = 0; i < lenWithAlpha; i++) {
@@ -42,18 +39,18 @@ const parsePPM = data => {
     else bytes[i] = raster[index++];
   }
 
-  myImageData = new ImageData(bytes, width, height);
+  const myImageData = new ImageData(bytes, width, height);
   // console.log(width);
 
   return {
-    row: headers[2],
-    col: headers[3],
-    maxSelection: headers[5],
-    selectCost: headers[7],
-    swapCost: headers[8],
+    row: parseInt(headers[2]),
+    col: parseInt(headers[3]),
+    maxSelection: parseInt(headers[5]),
+    selectCost: parseInt(headers[7]),
+    swapCost: parseInt(headers[8]),
     width: width,
     height: height,
-    maxPixelValue: headers[11],
+    maxPixelValue: parseInt(headers[11]),
     imageSrc: myImageData,
   };
 };

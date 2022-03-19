@@ -15,7 +15,7 @@ const ReadFile = () => {
       // console.log(text);
       // const text = (reader.result);
       // let ppmImage = parsePPM(e.target.result);
-      let val = parsePPM(e.target.result);
+      const val = parsePPM(e.target.result);
 
       Promise
         .all([
