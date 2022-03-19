@@ -1,22 +1,24 @@
-var NUM_CHANNELS = 3;
-var NUM_HEADERS = 4;
-var DEFAULT_ALPHA = 255;
-
 const parsePPM = data => {
+  let NUM_CHANNELS = 3;
+  let NUM_HEADERS = 12;
+  let DEFAULT_ALPHA = 255;
   let myImageData;
   let width;
   let height;
-  let maxval;
 
   data = new Uint8Array(data);
+  console.log('parse data');
 
   let headers = [];
   let headerSize = 0;
 
   let buf = '';
+  let ch;
   for (let i = 0; headers.length < NUM_HEADERS; i++, headerSize++) {
-    let ch = String.fromCharCode(data[i]);
+    // console.log(i);
+    ch = String.fromCharCode(data[i]);
     if (/\s/.test(ch)) {
+      // if (" " == ch) {
       headers.push(buf);
       buf = '';
     } else {
@@ -24,9 +26,8 @@ const parsePPM = data => {
     }
   }
 
-  width = headers[1];
-  height = headers[2];
-  maxval = headers[3];
+  width = headers[9];
+  height = headers[10];
 
   // if (!(maxval >= 0 && maxval <= 255))
   let raster = data.slice(headerSize);
@@ -45,10 +46,15 @@ const parsePPM = data => {
   // console.log(width);
 
   return {
+    row: headers[2],
+    col: headers[3],
+    maxSelection: headers[5],
+    selectCost: headers[7],
+    swapCost: headers[8],
     width: width,
     height: height,
-    data: myImageData,
-    maxval: maxval,
+    maxPixelValue: headers[11],
+    imageSrc: myImageData,
   };
 };
 
