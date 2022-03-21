@@ -67,14 +67,9 @@ const GridKonvas = () => {
   );
 
   const handleDragStart = e => {
+    e.target.moveToTop();
     const id = e.target.id();
     dataImage[parseInt(id)].isDragging = true;
-    // const data = dataImage.map(item => (item.id === id ? { ...item, isDragging: true } : item));
-    const item = dataImage.find(i => i.id === id);
-    // remove from the list:
-    dataImage.splice(dataImage.indexOf(item), 1);
-    // add to the top
-    dataImage.push(item);
     setDataImage(dataImage);
     // console.log(dataImage);
   };
@@ -146,36 +141,17 @@ const GridKonvas = () => {
             imageState.width + 2,
           ]}
         />
-        {/* <Rect
-                    x={50}
-                    y={50}
-                    width={imageState.width / imageState.col}
-                    height={imageState.height / imageState.row}
-                    // fill="red"
-                    shadowBlur={10}
-                    draggable={true}
-                    fillPatternImage={imageState.imageSrc}
-                    /> */
-        }
-        {dataImage.map((v, i) => {
-          return (
-            <Group
-              key={v.id}
-              id={v.id}
-              draggable
-              x={0}
-              y={0}
-              width={gridX}
-              height={gridY}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDradEnd}
-              onContextMenu={handleContextMenu}
-              offset={{ x: (-gridX) / 2, y: (-gridY) / 2 }}
-              posX={v.posX}
-              posY={v.posY}
-              pos={v.pos}
-            >
+        <Group
+          x={0}
+          y={0}
+          width={imageState.width}
+          height={imageState.height}
+          offset={{ x: (-gridX) / 2, y: (-gridY) / 2 }}
+        >
+          {dataImage.map((v, i) => {
+            return (
               <Rect
+                key={v.id}
                 id={v.id}
                 x={v.x}
                 y={v.y}
@@ -188,30 +164,18 @@ const GridKonvas = () => {
                 fillPatternImage={imageState.imageSrc}
                 fillPatternOffset={{ x: v.offsetX, y: v.offsetY }}
                 offset={{ x: gridX / 2, y: gridY / 2 }}
-                //   fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-                //   fillLinearGradientEndPoint={{ x: gridX, y: gridY }}
-                //   fillLinearGradientColorStops={[
-                //     0,
-                //     'rgba(0,0,0,0.7)',
-                //     1,
-                //     'rgba(255,255,255,0.5)'
-                //   ]}
-                // fill="red"
+                draggable
+                onDragStart={handleDragStart}
+                onDragEnd={handleDradEnd}
+                onContextMenu={handleContextMenu}
+                posX={v.posX}
+                posY={v.posY}
+                pos={v.pos}
+                // globalCompositeOperation={'copy'}
               />
-              {/* <Text
-                  text={v.id}
-                  fontSize={40}
-                  fontFamily="Calibri"
-                  fill="#000"
-                  width={gridX}
-                  align="center"
-                  offset={{ x: gridX / 2, y: gridY / 2 }}
-                  // padding={5}
-                /> */
-              }
-            </Group>
-          );
-        })}
+            );
+          })}
+        </Group>
         {/* <Rect
                         x={0}
                         y={0}
