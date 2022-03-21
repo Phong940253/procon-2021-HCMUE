@@ -22,6 +22,8 @@ const GridKonvas = () => {
         rotation: 0,
         x: STROKE_VALUE / 2 + gridX * (parseInt(i) % col),
         y: STROKE_VALUE / 2 + gridY * parseInt(parseInt(i) / col),
+        offsetX: gridX * (parseInt(i) % col),
+        offsetY: gridY * parseInt(parseInt(i) / col),
       });
     }
     return data;
@@ -158,6 +160,7 @@ const GridKonvas = () => {
                   strokeWidth={STROKE_VALUE}
                   rotation={v.rotation}
                   fillPatternImage={imageState.imageSrc}
+                  fillPatternOffset={{ x: v.offsetX, y: v.offsetY }}
                   offset={{ x: gridX / 2, y: gridY / 2 }}
                   //   fillLinearGradientStartPoint={{ x: 0, y: 0 }}
                   //   fillLinearGradientEndPoint={{ x: gridX, y: gridY }}
