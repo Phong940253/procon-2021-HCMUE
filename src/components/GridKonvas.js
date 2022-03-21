@@ -23,8 +23,6 @@ const GridKonvas = () => {
         x: STROKE_VALUE / 2 + gridX * (parseInt(i) % col),
         y: STROKE_VALUE / 2 + gridY * parseInt(parseInt(i) / col),
       });
-      // console.log(gridX * (i % imageState.col), gridY * parseInt(i / imageState.row));
-      // console.log(gridX, gridY);
     }
     return data;
   };
@@ -38,12 +36,14 @@ const GridKonvas = () => {
 
   useEffect(
     () => {
+      // set gridWidth
       let gridTX, gridTY;
       if (imageState.col !== 0) {
         gridTX = imageState.width / imageState.col;
         setGridX(gridTX);
       }
 
+      // grid Height
       if (imageState.row !== 0) {
         gridTY = imageState.height / imageState.row;
         setGridY(gridTY);

@@ -92,7 +92,7 @@ const FormInput = () => {
         headers: { Authorization: `Bearer ${gameState.token}` },
       })
       .then(res => {
-        // console.log(string);
+        console.log(res.data);
         const val = parsePPM(res.data);
 
         Promise
