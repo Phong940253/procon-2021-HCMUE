@@ -1,16 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { Stage, Group, Layer, Rect, Image, Text, Line } from 'react-konva';
+import { Stage, Group, Layer, Rect, Line } from 'react-konva';
 // import Tile, { propTypes as TilePropTypes } from './Tile';
-
-const initDataImage = (row, col) => {
-  const data = [];
-  for (let i = 1; i <= row * col; i++) {
-    data.push({ id: i, isDragging: false, rotation: 0 });
-  }
-  return data;
-};
 const STROKE_VALUE = 2;
 
 const GridKonvas = () => {
@@ -19,11 +11,25 @@ const GridKonvas = () => {
   const [gridX, setGridX] = React.useState(0);
   const [gridY, setGridY] = React.useState(0);
 
+  const initDataImage = (row, col) => {
+    const data = [];
+    for (let i = 0; i <= row * col; i++) {
+      // console.log(i, imageState.col, i % imageState.col, parseInt(i / imageState.row));
+      data.push({
+        id: String(i),
+        isDragging: false,
+        rotation: 0,
+        x: STROKE_VALUE / 2 + gridX * (i % imageState.col),
+        y: STROKE_VALUE / 2 + gridY * parseInt(i / imageState.row),
+      });
+      // console.log(gridX * (i % imageState.col), gridY * parseInt(i / imageState.row));
+      // console.log(gridX, gridY);
+    }
+    return data;
+  };
+
   useEffect(
     () => {
-      // console.log(imageState);
-
-      setDataImage(initDataImage(imageState.row, imageState.col));
       if (imageState.col !== 0) {
         setGridX(imageState.width / imageState.col);
       }
@@ -31,13 +37,32 @@ const GridKonvas = () => {
       if (imageState.row !== 0) {
         setGridY(imageState.height / imageState.row);
       }
+
+      console.log(gridX, gridY);
+
+      // console.log(imageState);
+      const data = initDataImage(imageState.row, imageState.col);
+      setDataImage(data);
+      // console.log(data);
     },
     [imageState],
   );
 
+  useEffect(
+    () => {
+      setDataImage(
+        dataImage.map(item => ({
+          ...item,
+          x: STROKE_VALUE / 2 + gridX * (parseInt(item.id) % imageState.col),
+        })),
+      );
+    },
+    [gridX],
+  );
+
   const handleDragStart = e => {
     const id = e.target.id();
-    dataImage[id - 1].isDragging = true;
+    dataImage[parseInt(id)].isDragging = true;
     // const data = dataImage.map(item => (item.id === id ? { ...item, isDragging: true } : item));
     setDataImage(dataImage);
     // console.log(dataImage);
@@ -123,8 +148,8 @@ const GridKonvas = () => {
               >
                 <Rect
                   id={v.id}
-                  x={STROKE_VALUE / 2}
-                  y={STROKE_VALUE / 2}
+                  x={v.x}
+                  y={v.y}
                   width={gridX}
                   height={gridY}
                   shadowBlur={v.isDragging ? 10 : 0}

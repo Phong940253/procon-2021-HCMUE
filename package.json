@@ -4,7 +4,6 @@
   "private": true,
   "devDependencies": {
     "coveralls": "^2.11.16",
-    "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
@@ -13,7 +12,7 @@
     "lint-staged": "^3.3.1",
     "pre-commit": "^1.2.2",
     "prettier": "^0.18.0",
-    "react-scripts": "^1.0.7"
+    "react-scripts": "^2.x.x"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -48,7 +47,8 @@
     ],
     "rules": {
       "semi": "off",
-      "radix": "off"
+      "radix": "off",
+      "no-unused-vars": "off"
     }
   },
   "lint-staged": {

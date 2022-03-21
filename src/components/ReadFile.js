@@ -1,11 +1,11 @@
 import React from 'react';
 import parsePPM from '../lib/ppm-decode';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { change_image } from '../redux/ducks';
 
 const ReadFile = () => {
   const dispatch = useDispatch();
-  const imageState = useSelector(state => state.image);
+  // const imageState = useSelector(state => state.image);
 
   const showFile = async e => {
     e.preventDefault();
