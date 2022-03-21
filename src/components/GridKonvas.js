@@ -24,6 +24,9 @@ const GridKonvas = () => {
         y: STROKE_VALUE / 2 + gridY * parseInt(parseInt(i) / col),
         offsetX: gridX * (parseInt(i) % col),
         offsetY: gridY * parseInt(parseInt(i) / col),
+        pos: { x: i % col, y: parseInt(i / col) },
+        posX: i % col,
+        posY: parseInt(i / col),
       });
     }
     return data;
@@ -67,16 +70,27 @@ const GridKonvas = () => {
     const id = e.target.id();
     dataImage[parseInt(id)].isDragging = true;
     // const data = dataImage.map(item => (item.id === id ? { ...item, isDragging: true } : item));
+    const item = dataImage.find(i => i.id === id);
+    // remove from the list:
+    dataImage.splice(dataImage.indexOf(item), 1);
+    // add to the top
+    dataImage.push(item);
     setDataImage(dataImage);
     // console.log(dataImage);
   };
 
   const handleDradEnd = e => {
+    // console.log(e.target.attrs.posX + Math.round(e.target.x() / gridX), e.target.attrs.posY + Math.round(e.target.y() / gridY));
     e.target.to({
       x: Math.round(e.target.x() / gridX) * gridX,
       y: Math.round(e.target.y() / gridY) * gridY,
     });
-    const data = dataImage.map(item => ({ ...item, isDragging: false }));
+    const data = dataImage.map(item => ({
+      ...item,
+      isDragging: false,
+      posX: Math.round(e.target.x() / gridX) + e.target.attrs.pos.x,
+      posY: Math.round(e.target.y() / gridY) + e.target.attrs.pos.y,
+    }));
     setDataImage(data);
   };
 
@@ -94,36 +108,45 @@ const GridKonvas = () => {
   };
 
   return (
-    <Stage width={800} height={800}>
-      <Layer>
-        <Group
-          x={0}
-          y={0}
-          width={imageState.width}
-          height={imageState.height}
-          draggable={false}
-        >
-          <Line
-            strokeWidth={2}
-            stroke={'red'}
-            points={[0, 0, 0, imageState.width]}
-          />
-          <Line
-            strokeWidth={2}
-            stroke={'red'}
-            points={[0, 0, imageState.height, 0]}
-          />
-          <Line
-            strokeWidth={2}
-            stroke={'red'}
-            points={[0, imageState.width, imageState.height, imageState.width]}
-          />
-          <Line
-            strokeWidth={2}
-            stroke={'red'}
-            points={[imageState.height, 0, imageState.height, imageState.width]}
-          />
-          {/* <Rect
+    <Stage width={900} height={900}>
+      <Layer
+        x={50}
+        y={50}
+        width={imageState.width}
+        height={imageState.height}
+        draggable={false}
+      >
+        <Line
+          strokeWidth={2}
+          stroke={'red'}
+          points={[0, 0, 0, imageState.width + 2]}
+        />
+        <Line
+          strokeWidth={2}
+          stroke={'red'}
+          points={[0, 0, imageState.height + 2, 0]}
+        />
+        <Line
+          strokeWidth={2}
+          stroke={'red'}
+          points={[
+            0,
+            imageState.width + 2,
+            imageState.height + 2,
+            imageState.width + 2,
+          ]}
+        />
+        <Line
+          strokeWidth={2}
+          stroke={'red'}
+          points={[
+            imageState.height + 2,
+            0,
+            imageState.height + 2,
+            imageState.width + 2,
+          ]}
+        />
+        {/* <Rect
                     x={50}
                     y={50}
                     width={imageState.width / imageState.col}
@@ -133,46 +156,49 @@ const GridKonvas = () => {
                     draggable={true}
                     fillPatternImage={imageState.imageSrc}
                     /> */
-          }
-          {dataImage.map((v, i) => {
-            return (
-              <Group
-                key={v.id}
+        }
+        {dataImage.map((v, i) => {
+          return (
+            <Group
+              key={v.id}
+              id={v.id}
+              draggable
+              x={0}
+              y={0}
+              width={gridX}
+              height={gridY}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDradEnd}
+              onContextMenu={handleContextMenu}
+              offset={{ x: (-gridX) / 2, y: (-gridY) / 2 }}
+              posX={v.posX}
+              posY={v.posY}
+              pos={v.pos}
+            >
+              <Rect
                 id={v.id}
-                draggable
-                x={0}
-                y={0}
+                x={v.x}
+                y={v.y}
                 width={gridX}
                 height={gridY}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDradEnd}
-                onContextMenu={handleContextMenu}
-                offset={{ x: (-gridX) / 2, y: (-gridY) / 2 }}
-              >
-                <Rect
-                  id={v.id}
-                  x={v.x}
-                  y={v.y}
-                  width={gridX}
-                  height={gridY}
-                  shadowBlur={v.isDragging ? 10 : 0}
-                  stroke="black"
-                  strokeWidth={STROKE_VALUE}
-                  rotation={v.rotation}
-                  fillPatternImage={imageState.imageSrc}
-                  fillPatternOffset={{ x: v.offsetX, y: v.offsetY }}
-                  offset={{ x: gridX / 2, y: gridY / 2 }}
-                  //   fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-                  //   fillLinearGradientEndPoint={{ x: gridX, y: gridY }}
-                  //   fillLinearGradientColorStops={[
-                  //     0,
-                  //     'rgba(0,0,0,0.7)',
-                  //     1,
-                  //     'rgba(255,255,255,0.5)'
-                  //   ]}
-                  // fill="red"
-                />
-                {/* <Text
+                shadowBlur={v.isDragging ? 10 : 0}
+                stroke="black"
+                strokeWidth={STROKE_VALUE}
+                rotation={v.rotation}
+                fillPatternImage={imageState.imageSrc}
+                fillPatternOffset={{ x: v.offsetX, y: v.offsetY }}
+                offset={{ x: gridX / 2, y: gridY / 2 }}
+                //   fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+                //   fillLinearGradientEndPoint={{ x: gridX, y: gridY }}
+                //   fillLinearGradientColorStops={[
+                //     0,
+                //     'rgba(0,0,0,0.7)',
+                //     1,
+                //     'rgba(255,255,255,0.5)'
+                //   ]}
+                // fill="red"
+              />
+              {/* <Text
                   text={v.id}
                   fontSize={40}
                   fontFamily="Calibri"
@@ -182,11 +208,11 @@ const GridKonvas = () => {
                   offset={{ x: gridX / 2, y: gridY / 2 }}
                   // padding={5}
                 /> */
-                }
-              </Group>
-            );
-          })}
-          {/* <Rect
+              }
+            </Group>
+          );
+        })}
+        {/* <Rect
                         x={0}
                         y={0}
                         width={imageState.width}
@@ -210,8 +236,7 @@ const GridKonvas = () => {
                         globalCompositeOperation={'destination-in'}
                         image={imageState.imageSrc}
                     /> */
-          }
-        </Group>
+        }
       </Layer>
     </Stage>
   );
