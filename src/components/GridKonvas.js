@@ -11,16 +11,17 @@ const GridKonvas = () => {
   const [gridX, setGridX] = React.useState(0);
   const [gridY, setGridY] = React.useState(0);
 
-  const initDataImage = (row, col) => {
+  const initDataImage = (row, col, gridX, gridY) => {
     const data = [];
-    for (let i = 0; i <= row * col; i++) {
+    console.log(row, col, gridX, gridY);
+    for (let i = 0; i < row * col; i++) {
       // console.log(i, imageState.col, i % imageState.col, parseInt(i / imageState.row));
       data.push({
         id: String(i),
         isDragging: false,
         rotation: 0,
-        x: STROKE_VALUE / 2 + gridX * (i % imageState.col),
-        y: STROKE_VALUE / 2 + gridY * parseInt(i / imageState.row),
+        x: STROKE_VALUE / 2 + gridX * (parseInt(i) % col),
+        y: STROKE_VALUE / 2 + gridY * parseInt(parseInt(i) / col),
       });
       // console.log(gridX * (i % imageState.col), gridY * parseInt(i / imageState.row));
       // console.log(gridX, gridY);
@@ -30,34 +31,34 @@ const GridKonvas = () => {
 
   useEffect(
     () => {
-      if (imageState.col !== 0) {
-        setGridX(imageState.width / imageState.col);
-      }
-
-      if (imageState.row !== 0) {
-        setGridY(imageState.height / imageState.row);
-      }
-
-      console.log(gridX, gridY);
-
-      // console.log(imageState);
-      const data = initDataImage(imageState.row, imageState.col);
-      setDataImage(data);
-      // console.log(data);
+      console.log(dataImage);
     },
-    [imageState],
+    [dataImage],
   );
 
   useEffect(
     () => {
-      setDataImage(
-        dataImage.map(item => ({
-          ...item,
-          x: STROKE_VALUE / 2 + gridX * (parseInt(item.id) % imageState.col),
-        })),
+      let gridTX, gridTY;
+      if (imageState.col !== 0) {
+        gridTX = imageState.width / imageState.col;
+        setGridX(gridTX);
+      }
+
+      if (imageState.row !== 0) {
+        gridTY = imageState.height / imageState.row;
+        setGridY(gridTY);
+      }
+
+      const data = initDataImage(
+        imageState.row,
+        imageState.col,
+        gridTX,
+        gridTY,
       );
+      setDataImage(data);
+      // console.log(data);
     },
-    [gridX],
+    [imageState],
   );
 
   const handleDragStart = e => {
