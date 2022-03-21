@@ -32,15 +32,6 @@ class App extends Component {
     });
   };
 
-  onNewClick = () => {
-    const newLevel = levelFactory(4 ** 2);
-    const newOriginalLevel = Object.assign({}, newLevel);
-    this.setState({
-      level: newLevel,
-      original: newOriginalLevel,
-    });
-  };
-
   render() {
     const { className } = this.props;
 

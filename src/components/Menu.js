@@ -7,8 +7,6 @@ import Avatar from 'material-ui/Avatar';
 import Alarm from 'material-ui/svg-icons/action/alarm';
 import Moves from 'material-ui/svg-icons/action/compare-arrows';
 import Replay from 'material-ui/svg-icons/av/replay';
-// import Pause from 'material-ui/svg-icons/av/pause';
-// import Play from 'material-ui/svg-icons/av/play-arrow';
 import New from 'material-ui/svg-icons/action/power-settings-new';
 import Submit from 'material-ui/svg-icons/action/done';
 import Delete from 'material-ui/svg-icons/action/delete';
@@ -16,6 +14,8 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
 // import { TextField } from 'material-ui';
+
+// import {Graph, astar} from "../lib/astar";
 
 const StyledToolbar = styled(Toolbar)`
 
@@ -50,7 +50,16 @@ const StyledToolbar = styled(Toolbar)`
 
 `;
 
-const Menu = ({ seconds, moves, onResetClick, onNewClick }) => {
+const Menu = ({ seconds, moves, onResetClick }) => {
+  const onSolveClick = () => {
+    // const graph = new Graph([
+    //   [1,1,1,1],
+    //   [0,1,1,0],
+    //   [0,0,1,1]
+    // ]);
+    // console.log(graph);
+  };
+
   return (
     <StyledToolbar className="toolbar">
       <ToolbarTitle className="toolbarTitle" text="PROCON HCMUE" />
@@ -58,22 +67,22 @@ const Menu = ({ seconds, moves, onResetClick, onNewClick }) => {
         <RaisedButton
           className="menuButton"
           label="Submit"
-          onClick={onNewClick}
+          onClick={onSolveClick}
           title="Start a new game"
           icon={<Submit className="menuIcon" />}
         />
         <RaisedButton
           className="menuButton"
           label="Delete"
-          onClick={onNewClick}
+          onClick={onSolveClick}
           title="Start a new game"
           icon={<Delete className="menuIcon" />}
         />
 
         <RaisedButton
           className="menuButton"
-          label="New game"
-          onClick={onNewClick}
+          label="Solve"
+          onClick={onSolveClick}
           title="Start a new game"
           icon={<New className="menuIcon" />}
         />

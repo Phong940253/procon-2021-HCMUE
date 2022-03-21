@@ -192,7 +192,6 @@ const Game = props => {
         moves={moves}
         onResetClick={props.onResetClick}
         onPauseClick={props.onPauseClick}
-        onNewClick={props.onNewClick}
         gameState={gameState}
       />
       <div className="container">
