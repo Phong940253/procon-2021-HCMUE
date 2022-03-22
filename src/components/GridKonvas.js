@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Stage, Group, Layer, Rect, Line } from 'react-konva';
+import { change_data_image } from '../redux/ducks';
 // import Tile, { propTypes as TilePropTypes } from './Tile';
 const STROKE_VALUE = 2;
 
 const GridKonvas = () => {
   const imageState = useSelector(state => state.image.image);
-  const [dataImage, setDataImage] = React.useState([]);
+  const dataImage = useSelector(state => state.dataImage.dataImage);
+  const dispatch = useDispatch();
   const [gridX, setGridX] = React.useState(0);
   const [gridY, setGridY] = React.useState(0);
 
@@ -24,7 +26,6 @@ const GridKonvas = () => {
         y: STROKE_VALUE / 2 + gridY * parseInt(parseInt(i) / col),
         offsetX: gridX * (parseInt(i) % col),
         offsetY: gridY * parseInt(parseInt(i) / col),
-        pos: { x: i % col, y: parseInt(i / col) },
         posX: i % col,
         posY: parseInt(i / col),
       });
@@ -60,7 +61,7 @@ const GridKonvas = () => {
         gridTX,
         gridTY,
       );
-      setDataImage(data);
+      dispatch(change_data_image(data));
       // console.log(data);
     },
     [imageState],
@@ -70,7 +71,7 @@ const GridKonvas = () => {
     e.target.moveToTop();
     const id = e.target.id();
     dataImage[parseInt(id)].isDragging = true;
-    setDataImage(dataImage);
+    dispatch(change_data_image(dataImage));
     // console.log(dataImage);
   };
 
@@ -80,13 +81,18 @@ const GridKonvas = () => {
       x: Math.round(e.target.x() / gridX) * gridX,
       y: Math.round(e.target.y() / gridY) * gridY,
     });
-    const data = dataImage.map(item => ({
-      ...item,
-      isDragging: false,
-      posX: Math.round(e.target.x() / gridX) + e.target.attrs.pos.x,
-      posY: Math.round(e.target.y() / gridY) + e.target.attrs.pos.y,
-    }));
-    setDataImage(data);
+    const data = dataImage.map(
+      item => item.id === e.target.id()
+        ? {
+            ...item,
+            isDragging: false,
+            posX: Math.round(e.target.x() / gridX),
+            posY: Math.round(e.target.y() / gridY),
+          }
+        : item,
+    );
+    // console.log(Math.round(e.target.x() / gridX), Math.round(e.target.y() / gridY));
+    dispatch(change_data_image(data));
   };
 
   const handleContextMenu = e => {
@@ -99,11 +105,11 @@ const GridKonvas = () => {
           ? { ...item, rotation: (item.rotation + 90) % 360 }
           : item,
     );
-    setDataImage(data);
+    dispatch(change_data_image(data));
   };
 
   return (
-    <Stage width={900} height={900}>
+    <Stage width={1200} height={1200}>
       <Layer
         x={50}
         y={50}
@@ -170,7 +176,6 @@ const GridKonvas = () => {
                 onContextMenu={handleContextMenu}
                 posX={v.posX}
                 posY={v.posY}
-                pos={v.pos}
                 // globalCompositeOperation={'copy'}
               />
             );

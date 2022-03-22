@@ -15,6 +15,12 @@ import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
 // import { TextField } from 'material-ui';
 
+import { useSelector } from 'react-redux';
+
+import type { BoardTiles } from '../lib/board';
+import Board from '../lib/board';
+import Solver from '../lib/solver';
+
 // import {Graph, astar} from "../lib/astar";
 
 const StyledToolbar = styled(Toolbar)`
@@ -51,13 +57,37 @@ const StyledToolbar = styled(Toolbar)`
 `;
 
 const Menu = ({ seconds, moves, onResetClick }) => {
+  const dataImage = useSelector(state => state.dataImage.dataImage);
+  const imageState = useSelector(state => state.image.image);
   const onSolveClick = () => {
-    // const graph = new Graph([
-    //   [1,1,1,1],
-    //   [0,1,1,0],
-    //   [0,0,1,1]
-    // ]);
-    // console.log(graph);
+    let tiles: BoardTiles = new Array(imageState.row);
+
+    for (let i = 0; i < tiles.length; i++) {
+      tiles[i] = new Array(imageState.col);
+    }
+
+    dataImage.map(item => tiles[item.posY][item.posX] = parseInt(item.id));
+    // console.log(tiles);
+    const initial = new Board(0, tiles, imageState.maxSelection, null, {
+      x: 0,
+      y: 0,
+    });
+    const solver = new Solver(initial);
+
+    solver
+      .solve()
+      .then((solution: SolverSolution) => {
+        console.log('\nSolution found with the following moves:');
+        console.log(solution);
+        solution.states.filter((state: SolverState) =>
+          console.log(state.board.toString()));
+        console.log(`\nMinimum number of moves: ${solution.moves}`);
+      })
+      .catch((error: NotSolvableError) => {
+        console.error(`[${error.name}]:`, error.message);
+      });
+
+    console.log(initial);
   };
 
   return (

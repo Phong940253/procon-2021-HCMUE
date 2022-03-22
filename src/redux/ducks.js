@@ -25,8 +25,13 @@ const initialImageState = {
   image,
 };
 
+const initialDataImageState = {
+  dataImage: [],
+};
+
 export const CHANGE_STATE = 'CHANGE_STATE';
 export const CHANGE_IMAGE = 'CHANGE_IMAGE';
+export const CHANGE_DATA_IMAGE = 'CHANGE_DATA_IMAGE';
 
 export const change_state = state => ({
   type: CHANGE_STATE,
@@ -36,6 +41,11 @@ export const change_state = state => ({
 export const change_image = image => ({
   type: CHANGE_IMAGE,
   info: image,
+});
+
+export const change_data_image = dataImage => ({
+  type: CHANGE_DATA_IMAGE,
+  info: dataImage,
 });
 
 export const reducer = (state = initialState, action) => {
@@ -55,7 +65,18 @@ export const imageReducer = (state = initialImageState, action) => {
       return state;
   }
 };
+
+export const dataImageReducer = (state = initialDataImageState, action) => {
+  switch (action.type) {
+    case CHANGE_DATA_IMAGE:
+      return { ...state, dataImage: action.info };
+    default:
+      return state;
+  }
+};
+
 export const reducers = combineReducers({
   general: reducer,
   image: imageReducer,
+  dataImage: dataImageReducer,
 });

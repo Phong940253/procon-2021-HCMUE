@@ -21,18 +21,18 @@ export type CoordComparator = {
  * @param {BoardTiles} board The board to determine a goal for.
  * @returns {BoardTiles} the goal board.
  */
-export const getGoalBoard = (width: number, height: number): BoardTiles => {
+export const getOriginBoard = (width: number, height: number): BoardTiles => {
   const range: number = width * height;
-  const goal: BoardTiles = [];
+  const origin: BoardTiles = [];
 
-  for (let y = 0, n = 1; y < height; y++) {
-    goal[y] = [];
-    for (let x = 0; x < width; x++, n++) {
-      goal[y][x] = n < range ? n : 0;
+  for (let i = 0, n = 0; i < height; ++i) {
+    origin[i] = [];
+    for (let j = 0; j < width; ++j, ++n) {
+      origin[i][j] = n;
     }
   }
-
-  return goal;
+  console.log(origin);
+  return origin;
 };
 
 /**
@@ -69,15 +69,22 @@ export const getZeroPosition = (board: BoardTiles): TileCoord => {
  */
 export const newBoardFromPosition = (
   reference: BoardTiles,
+  goal: BoardTiles,
   position: TileCoord,
   oldPosition: TileCoord,
+  maxSelection: Number,
+  selectAction: ?Boolean = false,
 ): Board => {
   const tiles = reference.map(row => row.slice());
   // const movedVal = tiles[position.y][position.x]; // Value copy, don't reference copy
   // Replace the old 0 with the number being moved before assigning 0 to its new position
-  tiles[oldPosition.y][oldPosition.x] = tiles[position.y][position.x];
-  tiles[position.y][position.x] = 0;
-  return new Board(tiles, position);
+  if (!selectAction) {
+    const temp = tiles[oldPosition.y][oldPosition.x];
+    tiles[oldPosition.y][oldPosition.x] = tiles[position.y][position.x];
+    tiles[position.y][position.x] = temp;
+    return new Board(1, tiles, maxSelection, goal, position);
+  }
+  return new Board(1, tiles, maxSelection - 1, goal, position);
 };
 
 /**
@@ -97,14 +104,34 @@ export default class Board {
   goal: BoardTiles;
 
   /** The current position of zero */
-  zeroPosition: TileCoord;
+  selectPos: TileCoord;
 
-  constructor(tiles: BoardTiles, position: ?TileCoord = null) {
-    this.board = tiles;
-    this.height = tiles.length;
-    this.width = tiles[0].length;
-    this.zeroPosition = position || getZeroPosition(this.board);
-    this.goal = getGoalBoard(this.width, this.height);
+  maxSelection: number;
+
+  constructor(
+    type: number,
+    tiles: BoardTiles,
+    maxSelection: ?Number = 1,
+    goal: ?BoardTiles = null,
+    position: ?TileCoord = null,
+  ) {
+    if (type == 0) {
+      this.height = tiles.length;
+      this.width = tiles[0].length;
+      this.selectPos = position;
+      this.goal = tiles;
+      this.board = getOriginBoard(this.width, this.height);
+      this.maxSelection = maxSelection;
+      // console.log("contructor 1");
+    } else {
+      this.height = tiles.length;
+      this.width = tiles[0].length;
+      this.selectPos = position;
+      this.goal = goal;
+      this.board = tiles;
+      this.maxSelection = maxSelection;
+      // console.log("contructor 2");
+    }
   }
 
   /**
@@ -114,7 +141,7 @@ export default class Board {
   toString(): string {
     return this.board
       .reduce((prev, cur) => `${prev}\n${cur.join(' ')}`, '')
-      .replace('0', ' ');
+      .replace(this.board[this.selectPos.y][this.selectPos.x], ' ');
   }
 
   /**
@@ -160,6 +187,7 @@ export default class Board {
       // Iterate through rows and see if the value exists
       for (var y = 0; y < this.board.length; y++) {
         const boardX = this.board[y].indexOf(i);
+        // console.log("goalX: ", goalX);
         const goalX = this.goal[y].indexOf(i);
         if (boardX !== -1) {
           coords.board = { x: boardX, y };
@@ -196,37 +224,57 @@ export default class Board {
    */
   getNeighbors(): Array<Board> {
     const result = [];
-    const { zeroPosition, board, width, height } = this;
+    const { selectPos, board, width, height, goal, maxSelection } = this;
 
     // Work from right to left since most puzzles favour that direction
     for (let i = 1; i > -2; i -= 2) {
       // Check horizontally first...
-      if (zeroPosition.x + i >= 0 && zeroPosition.x + i < width) {
+      if (selectPos.x + i >= 0 && selectPos.x + i < width) {
         result.push(
           newBoardFromPosition(
             board,
+            goal,
             {
-              x: zeroPosition.x + i,
-              y: zeroPosition.y,
+              x: selectPos.x + i,
+              y: selectPos.y,
             },
-            zeroPosition,
+            selectPos,
+            maxSelection,
           ),
         );
       }
 
       // Now vertically...
-      if (zeroPosition.y + i >= 0 && zeroPosition.y + i < height) {
+      if (selectPos.y + i >= 0 && selectPos.y + i < height) {
         result.push(
           newBoardFromPosition(
             board,
+            goal,
             {
-              x: zeroPosition.x,
-              y: zeroPosition.y + i,
+              x: selectPos.x,
+              y: selectPos.y + i,
             },
-            zeroPosition,
+            selectPos,
+            maxSelection,
           ),
         );
       }
+    }
+
+    if (maxSelection > 0) {
+      console.log('selecting...');
+      for (let i = 0; i < width; ++i)
+        for (let j = 0; j < height; ++j)
+          result.push(
+            newBoardFromPosition(
+              board,
+              goal,
+              { x: i, y: j },
+              null,
+              maxSelection,
+              true,
+            ),
+          );
     }
 
     return result;

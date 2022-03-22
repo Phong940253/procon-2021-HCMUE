@@ -57,7 +57,7 @@ export default class Solver {
 
   constructor(initial: Board) {
     this.start = initial;
-    this.goal = new Board(initial.goal);
+    this.goal = new Board(1, initial.goal, initial.maxSelection, initial.goal);
   }
 
   /**
@@ -73,7 +73,14 @@ export default class Solver {
 
     return new Promise((resolve, reject) => {
       try {
+        console.log('board: ', state.board);
+        // console.log("start: ", this.start);
+        console.log('goal: ', this.goal);
+        // console.log(state.board.equals(this.goal));
+
+        console.log('solving...');
         while (!state.board.equals(this.goal)) {
+          // console.log("solving...");
           state = this.getNextMove(state, history);
           history.push(state);
         }
@@ -84,6 +91,7 @@ export default class Solver {
           solvable: true,
         });
       } catch (error) {
+        console.log(error);
         reject(error);
       }
     });
@@ -94,6 +102,7 @@ export default class Solver {
    * then pushes that into the state.
    */
   getNextMove(state: SolverState, history: Array<SolverState>): SolverState {
+    // console.log("get next move");
     // Create a new priority queue with all neighbors that haven't already been used
     const neighbors = state.board
       .getNeighbors()
