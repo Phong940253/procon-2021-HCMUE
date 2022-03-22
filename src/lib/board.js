@@ -262,7 +262,6 @@ export default class Board {
     }
 
     if (maxSelection > 0) {
-      console.log('selecting...');
       for (let i = 0; i < width; ++i)
         for (let j = 0; j < height; ++j)
           result.push(
@@ -276,7 +275,6 @@ export default class Board {
             ),
           );
     }
-
     return result;
   }
 }

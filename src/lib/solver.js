@@ -104,9 +104,11 @@ export default class Solver {
   getNextMove(state: SolverState, history: Array<SolverState>): SolverState {
     // console.log("get next move");
     // Create a new priority queue with all neighbors that haven't already been used
-    const neighbors = state.board
-      .getNeighbors()
-      .filter(board => !hasBoardBeenUsed(board, history));
+    const neighbors = state.board.getNeighbors();
+    // .filter(board => !hasBoardBeenUsed(board, history));
+    console.log('board', state.board);
+    console.log('neighbors', neighbors);
+
     const priority = this.createPriorityQueue(neighbors, state.moves);
     // If the priority queue is empty that means we've tried everything already
     if (priority.length < 1) {
