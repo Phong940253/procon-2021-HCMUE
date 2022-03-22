@@ -97,6 +97,28 @@ export default class Solver {
     });
   }
 
+  chooseBestMove(priority) {
+    let curr, prev, bestOption;
+
+    priority.map((item, index, arr) => {
+      if (index == 0) {
+        bestOption = item;
+        return;
+      }
+
+      if (
+        item.hamming === 0 && item.manhattan === 0 ||
+        item.hamming < bestOption.hamming &&
+          item.manhattan < bestOption.manhattan
+      ) {
+        bestOption = item;
+        return;
+      }
+    });
+
+    return bestOption.board;
+  }
+
   /**
    * Checks all neighbors and determines which one is the most likely to lead to a solved puzzle,
    * then pushes that into the state.
@@ -106,11 +128,12 @@ export default class Solver {
     // Create a new priority queue with all neighbors that haven't already been used
     const neighbors = state.board.getNeighbors();
     // .filter(board => !hasBoardBeenUsed(board, history));
-    console.log('board', state.board);
-    console.log('neighbors', neighbors);
+    // console.log('board', state.board);
+    // console.log('neighbors', neighbors);
 
     const priority = this.createPriorityQueue(neighbors, state.moves);
     // If the priority queue is empty that means we've tried everything already
+    const bestOption = this.chooseBestMove(priority);
     if (priority.length < 1) {
       console.log(`Queue length was less than 1.`);
       throw new NotSolvableError({
@@ -123,7 +146,7 @@ export default class Solver {
 
     // Return a new state
     return {
-      board: priority[0].board,
+      board: bestOption,
       moves: state.moves + 1,
       previous: state,
     };

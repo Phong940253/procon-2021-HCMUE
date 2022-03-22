@@ -70,6 +70,8 @@ export const getZeroPosition = (board: BoardTiles): TileCoord => {
 export const newBoardFromPosition = (
   reference: BoardTiles,
   goal: BoardTiles,
+  width: Number,
+  height: Number,
   position: TileCoord,
   oldPosition: TileCoord,
   maxSelection: Number,
@@ -79,6 +81,13 @@ export const newBoardFromPosition = (
   // const movedVal = tiles[position.y][position.x]; // Value copy, don't reference copy
   // Replace the old 0 with the number being moved before assigning 0 to its new position
   if (!selectAction) {
+    if (position.x >= width) position.x = 0;
+    if (position.x < 0) position.x = width - 1;
+
+    if (position.y >= height) position.y = 0;
+    if (position.y < 0) position.y = height - 1;
+
+    console.log(position, oldPosition);
     const temp = tiles[oldPosition.y][oldPosition.x];
     tiles[oldPosition.y][oldPosition.x] = tiles[position.y][position.x];
     tiles[position.y][position.x] = temp;
@@ -163,7 +172,7 @@ export default class Board {
   hamming(moves: number = 0): number {
     // 1 should be at the 0 index, 2 at 1, etc.
     return flattenBoard(this.board).filter((n, idx) => {
-      if (n === 0) {
+      if (n === this.board[this.selectPos.y][this.selectPos.x]) {
         return false;
       }
       if (n !== idx + 1) {
@@ -229,11 +238,13 @@ export default class Board {
     // Work from right to left since most puzzles favour that direction
     for (let i = 1; i > -2; i -= 2) {
       // Check horizontally first...
-      if (selectPos.x + i >= 0 && selectPos.x + i < width) {
+      if (selectPos.x + i >= -1 && selectPos.x + i <= width) {
         result.push(
           newBoardFromPosition(
             board,
             goal,
+            width,
+            height,
             {
               x: selectPos.x + i,
               y: selectPos.y,
@@ -245,11 +256,13 @@ export default class Board {
       }
 
       // Now vertically...
-      if (selectPos.y + i >= 0 && selectPos.y + i < height) {
+      if (selectPos.y + i >= -1 && selectPos.y + i <= height) {
         result.push(
           newBoardFromPosition(
             board,
             goal,
+            width,
+            height,
             {
               x: selectPos.x,
               y: selectPos.y + i,
@@ -268,6 +281,8 @@ export default class Board {
             newBoardFromPosition(
               board,
               goal,
+              width,
+              height,
               { x: i, y: j },
               null,
               maxSelection,
