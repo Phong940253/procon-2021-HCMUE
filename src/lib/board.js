@@ -87,7 +87,7 @@ export const newBoardFromPosition = (
     if (position.y >= height) position.y = 0;
     if (position.y < 0) position.y = height - 1;
 
-    console.log(position, oldPosition);
+    // console.log(position, oldPosition);
     const temp = tiles[oldPosition.y][oldPosition.x];
     tiles[oldPosition.y][oldPosition.x] = tiles[position.y][position.x];
     tiles[position.y][position.x] = temp;

@@ -133,7 +133,7 @@ export default class Solver {
 
     const priority = this.createPriorityQueue(neighbors, state.moves);
     // If the priority queue is empty that means we've tried everything already
-    const bestOption = this.chooseBestMove(priority);
+    // const bestOption = this.chooseBestMove(priority);
     if (priority.length < 1) {
       console.log(`Queue length was less than 1.`);
       throw new NotSolvableError({
@@ -146,7 +146,7 @@ export default class Solver {
 
     // Return a new state
     return {
-      board: bestOption,
+      board: priority[0].board,
       moves: state.moves + 1,
       previous: state,
     };
