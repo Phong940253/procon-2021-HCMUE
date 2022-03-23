@@ -79,17 +79,17 @@ export default class Solver {
         // console.log(state.board.equals(this.goal));
 
         console.log('solving...');
-        while (!state.board.equals(this.goal)) {
-          // console.log("solving...");
-          state = this.getNextMove(state, history);
-          history.push(state);
-        }
-        resolve({
-          states: history,
-          moves: state.moves,
-          context: this,
-          solvable: true,
-        });
+        // while (!state.board.equals(this.goal)) {
+        // console.log("solving...");
+        state = this.getNextMove(state, history, 0, resolve);
+        // history.push(state);
+        // }
+        // resolve({
+        //   states: history,
+        //   moves: state.moves,
+        //   context: this,
+        //   solvable: true,
+        // });
       } catch (error) {
         console.log(error);
         reject(error);
@@ -123,9 +123,30 @@ export default class Solver {
    * Checks all neighbors and determines which one is the most likely to lead to a solved puzzle,
    * then pushes that into the state.
    */
-  getNextMove(state: SolverState, history: Array<SolverState>): SolverState {
+  getNextMove(
+    state: SolverState,
+    history: Array<SolverState>,
+    depth: Number,
+    resolve,
+  ): SolverState {
     // console.log("get next move");
     // Create a new priority queue with all neighbors that haven't already been used
+    if (depth >= 5) return;
+
+    let history_copy = [...history];
+    // console.log("c", history_copy.length);
+    // console.log(history.length);
+    history_copy.push(state);
+    // console.log(history)
+    if (state.board.equals(this.goal)) {
+      resolve({
+        states: history_copy,
+        moves: state.moves,
+        context: this,
+        solvable: true,
+      });
+    }
+
     const neighbors = state.board.getNeighbors();
     // .filter(board => !hasBoardBeenUsed(board, history));
     // console.log('board', state.board);
@@ -134,22 +155,31 @@ export default class Solver {
     const priority = this.createPriorityQueue(neighbors, state.moves);
     // If the priority queue is empty that means we've tried everything already
     // const bestOption = this.chooseBestMove(priority);
-    if (priority.length < 1) {
-      console.log(`Queue length was less than 1.`);
-      throw new NotSolvableError({
-        states: history,
-        moves: state.moves,
-        context: this,
-        solvable: false,
-      });
-    }
-
+    // if (priority.length < 1) {
+    //   console.log(`Queue length was less than 1.`);
+    //   throw new NotSolvableError({
+    //     states: history,
+    //     moves: state.moves,
+    //     context: this,
+    //     solvable: false,
+    //   });
+    // }
+    priority.map(item => this.getNextMove(
+      {
+        board: item.board,
+        moves: state.moves + 1,
+        previous: state,
+      },
+      history_copy,
+      depth + 1,
+      resolve,
+    ));
     // Return a new state
-    return {
-      board: priority[0].board,
-      moves: state.moves + 1,
-      previous: state,
-    };
+    // return {
+    //   board: priority,
+    //   moves: state.moves + 1,
+    //   previous: state,
+    // };
   }
 
   /**
